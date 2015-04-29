@@ -8,24 +8,42 @@
         android:layout_height="fill_parent"
         android:id="@+id/fl_login">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/txt_email"
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="430sp"
             android:layout_gravity="center"
-            android:text="lucas.mull@hotmail.fr" />
+            android:background="@drawable/border_top">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/txt_passwd"
-            android:layout_gravity="center"
-            android:layout_marginTop="50sp"
-            android:text="gtrefaim" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/txt_email"
+                android:layout_gravity="center"
+                android:text="lucas.mull@hotmail.fr" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/txt_passwd"
+                android:layout_gravity="center"
+                android:layout_marginTop="50sp"
+                android:text="gtrefaim" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cb_remember_passwd"
+                android:layout_gravity="center_horizontal|bottom"
+                android:text="@string/remember_me"
+                android:layout_marginBottom="50sp" />
+
+        </FrameLayout>
+
+
 
         <Button
             style="@style/button"
@@ -38,30 +56,17 @@
             android:onClick="httprequest"
             android:nestedScrollingEnabled="false" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cb_remember_passwd"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="100sp"
-            android:text="@string/remember_me" />
+
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="54sp"
-            android:layout_gravity="center_horizontal|top"
-            android:background="#ffffffff">
+            android:layout_height="50sp"
+            android:layout_gravity="center_horizontal|top">
 
             <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                style="@style/title"
                 android:text="@string/title_login"
-                android:id="@+id/title_login"
-                android:layout_gravity="center"
-                android:textSize="30sp"
-                android:gravity="center"
-                android:textColor="#ff69210e" />
+                android:id="@+id/title_login" />
         </FrameLayout>
 
      </FrameLayout>

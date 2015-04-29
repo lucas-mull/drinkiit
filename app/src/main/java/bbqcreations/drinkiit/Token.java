@@ -66,7 +66,8 @@ public class Token {
         this.data = data;
     }
 
-    public void GetToken(Context context, String... params) {
+    public void GetToken(Context context, String... params) throws IOException{
+        this.setContext(context);
         try {
             sendData(new apiURL("postLogformURL", context), params);
             if (mainActivity.tokenData.getString("type").equals("success"))
@@ -75,10 +76,7 @@ public class Token {
                 this.value = null;
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
     }
 
     public boolean isValid(){
@@ -132,7 +130,6 @@ public class Token {
             response = httpclient.execute(httppost);
         }
         else{
-
             HttpGet httpget = new HttpGet(url.getGETinfo(params[0]));
             response = httpclient.execute(httpget);
         }

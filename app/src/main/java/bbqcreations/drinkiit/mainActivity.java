@@ -1,7 +1,9 @@
 package bbqcreations.drinkiit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -23,17 +25,19 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 
 public class mainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, LoginFragment.OnFragmentInteractionListener,
         AccueilFragment.OnFragmentInteractionListener, OrderFragment.OnFragmentInteractionListener,
-        UserOrdersFragment.OnFragmentInteractionListener {
+        UserOrdersFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener {
 
     public static JSONObject tokenData;
     public static JSONObject postOrderData;
     public static JSONObject userInfoData;
+    public static JSONObject menuData;
     public static boolean isTokenValid;
 
 
@@ -73,25 +77,20 @@ public class mainActivity extends ActionBarActivity
         Token current = null;
         if (isConnected && (position == 1 || position == 2 || position == 3)){
             try {
-               current = new Token(tokenData.getString("data"), this);
-               final Token inter = current;
-                try {
-                    isTokenValid = new AsyncTask<Void, Void, Boolean>(){
-
-                        @Override
-                        protected Boolean doInBackground(Void... params) {
-                            return inter.isValid();
-                        }
-                    }.execute().get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+                current = new Token(tokenData.getString("data"), this);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
+            final Token inter = current;
+                new AsyncTask<Void, Void, Void>(){
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        isTokenValid = inter.isValid();
+                        return null;
+                    }
+                }.execute();
+            }
         switch (position){
             case 0:
                 new_fragment = AccueilFragment.newInstance(position+1);
@@ -117,6 +116,7 @@ public class mainActivity extends ActionBarActivity
                     new_fragment = this.connexionExpiredFragment(position);
                 else
                     new_fragment = AccountFragment.newInstance(position + 1, current.getTokenValue());
+                break;
             default:
                 new_fragment = PlaceholderFragment.newInstance(position + 1);
                 break;
@@ -197,8 +197,6 @@ public class mainActivity extends ActionBarActivity
     }
 
     public void httprequest(View v) {
-        final FrameLayout frame_log = (FrameLayout)(findViewById(R.id.fl_login));
-        final FrameLayout frame_load = (FrameLayout)(findViewById(R.id.fl_loading));
         final Context current_context = this;
         EditText form_email = (EditText)(findViewById(R.id.txt_email));
         EditText form_passwd = (EditText)(findViewById(R.id.txt_passwd));
@@ -215,15 +213,23 @@ public class mainActivity extends ActionBarActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        frame_log.setVisibility(View.GONE);
-                        frame_load.setVisibility(View.VISIBLE);
+                        hideLoginFragment();
                     }
                 });
                 Token response = new Token();
-                response.GetToken(current_context, params);
+                try{
+                    response.GetToken(current_context, params);
+                }
+                // If IOException is thrown, it means the connection attempt failed
+                catch (IOException e){
+                    // Cancel the connection attempt and reset the fragment
+                    this.cancel(true);
+                }
+
                 if (response.getTokenValue() != null){
                     isTokenValid = true;
                     isConnected = true;
+                    response.getUserInfo();
                 }
                 else
                     isTokenValid = false;
@@ -231,14 +237,28 @@ public class mainActivity extends ActionBarActivity
             }
 
             @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-                /*runOnUiThread(new Runnable() {
+            protected void onCancelled(){
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        resetLoginFragment();
                     }
-                });*/
+                });
+                new AlertDialog.Builder(current_context)
+                        .setTitle("Wooooops!")
+                        .setMessage("Il semblerait que la requête n'ait pas atteint le serveur. Vérifiez que vous êtes bien connectés à Internet ou réessayez plus tard")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
                 try {
                     String res = tokenData.getString("type");
                     if (res.equals("success")){
@@ -248,8 +268,12 @@ public class mainActivity extends ActionBarActivity
                         mTitle = getString(R.string.title_section1);
                         restoreActionBar();
                     }
-                    else
+                    else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() { resetLoginFragment(); }});
                         Toast.makeText(current_context, "Email ou mot de passe invalide !", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -257,6 +281,20 @@ public class mainActivity extends ActionBarActivity
 
         }.execute(args);
 
+    }
+
+    private void resetLoginFragment(){
+        FrameLayout frame_log = (FrameLayout)(findViewById(R.id.fl_login));
+        FrameLayout frame_load = (FrameLayout)(findViewById(R.id.fl_loading));
+        frame_log.setVisibility(View.VISIBLE);
+        frame_load.setVisibility(View.GONE);
+    }
+
+    private void hideLoginFragment(){
+        FrameLayout frame_log = (FrameLayout)(findViewById(R.id.fl_login));
+        FrameLayout frame_load = (FrameLayout)(findViewById(R.id.fl_loading));
+        frame_log.setVisibility(View.GONE);
+        frame_load.setVisibility(View.VISIBLE);
     }
 
     /**

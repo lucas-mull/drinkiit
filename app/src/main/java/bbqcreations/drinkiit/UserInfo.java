@@ -13,17 +13,18 @@ public class UserInfo {
     private String name;
     private String surname;
     private String email;
-    private int credit;
+    private double credit;
     private boolean activated;
 
     public UserInfo(JSONObject data){
         try {
-            this.id = data.getInt("id");
-            this.name = data.getString("name");
-            this.surname = data.getString("surname");
-            this.email = data.getString("email");
-            this.credit = data.getInt("credit");
-            this.activated = data.getBoolean("activated");
+            JSONObject container = data.getJSONObject("data");
+            this.id = container.getInt("id");
+            this.name = container.getString("name");
+            this.surname = container.getString("surname");
+            this.email = container.getString("email");
+            this.credit = container.getDouble("credit");
+            this.activated = container.getBoolean("activated");
         } catch (JSONException e) {
             Log.v("Error: ", "field not found inside JSONObject");
             e.printStackTrace();
@@ -62,7 +63,7 @@ public class UserInfo {
         this.email = email;
     }
 
-    public int getCredit() {
+    public double getCredit() {
         return credit;
     }
 

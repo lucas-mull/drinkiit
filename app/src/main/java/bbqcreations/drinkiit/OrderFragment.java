@@ -65,24 +65,7 @@ public class OrderFragment extends Fragment {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
             token = getArguments().getString(ARG_TOKEN);
         }
-        JSONObject final_data = null;
-        try {
-           final_data = new AsyncTask<Void, Void, JSONObject>(){
-
-                @Override
-                protected JSONObject doInBackground(Void... params) {
-                    Token cur = new Token(token, getActivity());
-                    JSONObject data = cur.getUserInfo();
-                    return data;
-                }
-            }.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        this.userInfo = new UserInfo(final_data);
+        this.userInfo = new UserInfo(mainActivity.userInfoData);
     }
 
     @Override

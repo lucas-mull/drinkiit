@@ -22,8 +22,13 @@
     <string name="title_about">A PROPOS</string>
     <string name="title_order">COMMANDER</string>
     <string name="title_my_orders">MES COMMANDES</string>
+    <string name="title_my_account">MON COMPTE</string>
     <string name="lbl_solde">Solde</string>
+    <string name="lbl_email">Adresse mail</string>
+    <string name="lbl_activated">Statut</string>
+    <string name="lbl_name">Nom</string>
     <string name="connecting">Connexion en cours...</string>
+    <string name="deconnexion">Se déconnecter</string>
 
     <!--Names for Url requests-->
     <string name="baseURL">https://www.drinkiit.fr</string>

@@ -1,6 +1,7 @@
 package bbqcreations.drinkiit;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -63,30 +65,36 @@ public class AccountFragment extends Fragment {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
             token = getArguments().getString(ARG_TOKEN);
         }
-        JSONObject final_data = null;
-        try {
-            final_data = new AsyncTask<Void, Void, JSONObject>(){
-
-                @Override
-                protected JSONObject doInBackground(Void... params) {
-                    Token cur = new Token(token, getActivity());
-                    JSONObject data = cur.getUserInfo();
-                    return data;
-                }
-            }.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        this.userInfo = new UserInfo(final_data);
+        this.userInfo = new UserInfo(mainActivity.userInfoData);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_account, container, false);
+        TextView name = (TextView)rootView.findViewById(R.id.txt_account_name);
+        TextView email = (TextView)rootView.findViewById(R.id.txt_account_email);
+        TextView solde = (TextView)rootView.findViewById(R.id.txt_account_solde);
+        TextView statut = (TextView)rootView.findViewById(R.id.txt_account_activated);
+        name.setText(userInfo.getName() + " " + userInfo.getSurname());
+        email.setText(userInfo.getEmail());
+        solde.setText("" + userInfo.getCredit() + "€");
+        if (userInfo.isActivated()){
+            statut.setTextColor(Color.GREEN);
+            statut.setText("Activé");
+        }
+
+        else{
+            statut.setTextColor(Color.RED);
+            statut.setText("En attente d'activation");
+        }
+        if (userInfo.getCredit() <= 0)
+            solde.setTextColor(Color.RED);
+        else
+            solde.setTextColor(Color.GREEN);
+
+        return rootView;
     }
 
     public void onButtonPressed(Uri uri) {

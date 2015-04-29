@@ -22,7 +22,7 @@ public class apiURL {
     public apiURL(String key, Context context){
         this.key = key;
         this.c = context;
-        this.url = c.getString(R.string.baseURL);
+        this.url = context.getString(R.string.baseURL);
         if (this.getStringFromKey(key) != null)
             this.url += getStringFromKey(key);
         else

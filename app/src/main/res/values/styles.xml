@@ -19,4 +19,13 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="title" parent="@android:style/Widget.TextView">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:background">#ffffffff</item>
+        <item name="android:textColor">#ff69210e</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
