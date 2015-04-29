@@ -1,0 +1,51 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="bbqcreations.drinkiit.OrderFragment"
+    android:background="@drawable/bg_image">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="450sp"
+        android:id="@+id/listView"
+        android:layout_gravity="center" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50sp"
+        android:layout_gravity="center_horizontal|top"
+        android:background="#ffffffff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/title_commander"
+            android:text="@string/title_order"
+            android:textColor="#ff69210e"
+            android:textSize="30sp"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="25sp"
+            android:text="@string/lbl_solde"
+            android:id="@+id/lbl_solde"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:gravity="center|left|top"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:layout_width="40sp"
+            android:layout_height="25sp"
+            android:id="@+id/txt_solde"
+            android:layout_gravity="right|top"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/lbl_solde"
+            android:layout_alignStart="@+id/lbl_solde" />
+
+    </RelativeLayout>
+
+</FrameLayout>

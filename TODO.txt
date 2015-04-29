@@ -1,0 +1,6 @@
+Connexion - Récupération du TOKEN
+Récupération des informations de l'utilisateur
+Vérifier la validité du token
+Passer une commande
+Récupérer les commandes en cours
+Récupérer / Voir le menu
