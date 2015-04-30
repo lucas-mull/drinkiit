@@ -24,6 +24,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:background">#ffffffff</item>
         <item name="android:textColor">#ff69210e</item>
+        <item name="android:typeface">sans</item>
         <item name="android:textSize">30sp</item>
         <item name="android:gravity">center</item>
     </style>

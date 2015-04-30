@@ -1,7 +1,6 @@
 package bbqcreations.drinkiit;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -19,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -37,16 +35,24 @@ public class Token {
         //empty constructor, required to use getTokenFromRequest()
     }
 
+    public Token(JSONObject data){
+        try {
+            this.value = data.getString("data");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Token(String token, Context context) {
         this.value = token;
         this.c = context;
     }
 
-    public String getTokenValue(){
+    public String getValue(){
         return this.value;
     }
 
-    public void setTokenValue(String value){
+    public void setValue(String value){
         this.value = value;
     }
 
@@ -71,7 +77,7 @@ public class Token {
         try {
             sendData(new apiURL("postLogformURL", context), params);
             if (mainActivity.tokenData.getString("type").equals("success"))
-                this.setTokenValue(this.getData().getString("data"));
+                this.setValue(this.getData().getString("data"));
             else
                 this.value = null;
         } catch (JSONException e) {
@@ -80,7 +86,7 @@ public class Token {
     }
     public JSONObject getMenu(){
         try {
-            sendData(new apiURL("getMenuURL", this.c), getTokenValue());
+            sendData(new apiURL("getMenuURL", this.c), getValue());
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -91,7 +97,7 @@ public class Token {
 
     public boolean isValid(){
         try {
-            sendData(new apiURL("getTokenCheckURL", this.c), getTokenValue());
+            sendData(new apiURL("getTokenCheckURL", this.c), getValue());
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -102,7 +108,7 @@ public class Token {
 
     public JSONObject getUserInfo(){
         try {
-            sendData(new apiURL("getUserInfoURL", this.c), getTokenValue());
+            sendData(new apiURL("getUserInfoURL", this.c), getValue());
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {

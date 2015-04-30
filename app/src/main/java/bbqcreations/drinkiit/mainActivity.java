@@ -97,7 +97,7 @@ public class mainActivity extends ActionBarActivity
                     if (!isTokenValid)
                         new_fragment = this.connexionExpiredFragment(position);
                     else
-                        new_fragment = OrderFragment.newInstance(position + 1, current.getTokenValue());
+                        new_fragment = OrderFragment.newInstance(position + 1, current.getValue());
                 }
                 break;
             case 2:
@@ -110,7 +110,7 @@ public class mainActivity extends ActionBarActivity
                 if (!isTokenValid)
                     new_fragment = this.connexionExpiredFragment(position);
                 else
-                    new_fragment = AccountFragment.newInstance(position + 1, current.getTokenValue());
+                    new_fragment = AccountFragment.newInstance(position + 1, current.getValue());
                 break;
             default:
                 new_fragment = PlaceholderFragment.newInstance(position + 1);
@@ -226,7 +226,7 @@ public class mainActivity extends ActionBarActivity
                     this.cancel(true);
                 }
 
-                if (response.getTokenValue() != null){
+                if (response.getValue() != null){
                     isTokenValid = true;
                     isConnected = true;
                     response.getUserInfo();

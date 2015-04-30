@@ -9,7 +9,9 @@
         android:orientation="vertical"
         android:weightSum="5"
         android:layout_margin="5sp"
-        android:background="@drawable/full_border">
+        android:background="@drawable/full_border"
+        android:id="@+id/ll_product"
+        android:visibility="visible">
 
 
         <TextView
@@ -52,22 +54,53 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:visibility="gone"
-        android:weightSum="2">
-
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText2"
-            android:layout_weight="1"
-            android:hint="@string/comment" />
+        android:weightSum="2"
+        android:id="@+id/ll_product_clicked"
+        android:background="@drawable/full_border"
+        android:layout_margin="5sp">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="5"
+            android:paddingTop="5sp"
+            android:paddingBottom="5sp"
+            android:background="#ffffffff">
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/edtxt_order_comment"
+                android:layout_weight="2"
+                android:hint="@string/comment" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/edtxt_order_qty"
+                android:layout_weight="3"
+                android:hint="qté"
+                android:text="1"/>
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:background="#ffc95743"
+            android:paddingBottom="5sp"
+            android:paddingTop="5sp">
 
             <Button
                 style="@style/button"
@@ -76,7 +109,8 @@
                 android:layout_weight="1"
                 android:text="@string/submit"
                 android:layout_marginLeft="5sp"
-                android:layout_marginRight="5sp" />
+                android:layout_marginRight="5sp"
+                android:id="@+id/btn_order_add" />
 
             <Button
                 style="@style/button"
@@ -85,7 +119,8 @@
                 android:layout_weight="1"
                 android:text="@string/cancel"
                 android:layout_marginLeft="5sp"
-                android:layout_marginRight="5sp" />
+                android:layout_marginRight="5sp"
+                android:id="@+id/btn_order_cancel" />
 
 
         </LinearLayout>

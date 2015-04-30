@@ -5,9 +5,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +42,7 @@ public class OrderFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ListView listView;
     private Menu menu;
+    public static View selectedItem;
 
     /**
      * Use this factory method to create a new instance of
@@ -81,7 +85,31 @@ public class OrderFragment extends Fragment {
         solde.setText(userInfo.getCredit() + "€");
         listView = (ListView)rootView.findViewById(R.id.lv_menu);
         listView.setAdapter(new MenuAdapter(getActivity(), menu));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("View triggered: ", view.getTag() + "");
+                selectItem(view);
+            }
+        });
         return rootView;
+    }
+
+    public void selectItem(View v){
+        if (selectedItem != null)
+            unSelectItem(selectedItem);
+        selectedItem = v;
+        LinearLayout base_ll = (LinearLayout)v.findViewById(R.id.ll_product);
+        LinearLayout ll_clicked = (LinearLayout)v.findViewById(R.id.ll_product_clicked);
+        base_ll.setVisibility(View.GONE);
+        ll_clicked.setVisibility(View.VISIBLE);
+    }
+
+    public void unSelectItem(View v){
+        LinearLayout base_ll = (LinearLayout)v.findViewById(R.id.ll_product);
+        LinearLayout ll_clicked = (LinearLayout)v.findViewById(R.id.ll_product_clicked);
+        ll_clicked.setVisibility(View.GONE);
+        base_ll.setVisibility(View.VISIBLE);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
