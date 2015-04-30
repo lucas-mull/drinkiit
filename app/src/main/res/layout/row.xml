@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="5"
+        android:layout_margin="5sp"
+        android:background="@drawable/full_border">
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:id="@+id/txt_product_name"
+            android:textSize="20sp"
+            android:background="#ffc5d2d6"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:gravity="center"
+            android:textColor="#ff69210e" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:id="@+id/txt_product_description"
+            android:textColor="#ffffffff"
+            android:background="#ffc95743"
+            android:paddingLeft="10sp"
+            android:textSize="15sp"
+            android:paddingRight="10sp"
+            android:gravity="center" />
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffffff"
+            android:id="@+id/txt_product_price"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="2">
+
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText2"
+            android:layout_weight="1"
+            android:hint="@string/comment" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/submit"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp" />
+
+            <Button
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
+

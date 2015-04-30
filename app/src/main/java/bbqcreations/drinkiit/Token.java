@@ -34,7 +34,7 @@ public class Token {
     private JSONObject data;
 
     public Token(){
-        //empty constructor, required to use GetToken()
+        //empty constructor, required to use getTokenFromRequest()
     }
 
     public Token(String token, Context context) {
@@ -66,7 +66,7 @@ public class Token {
         this.data = data;
     }
 
-    public void GetToken(Context context, String... params) throws IOException{
+    public void getTokenFromRequest(Context context, String... params) throws IOException{
         this.setContext(context);
         try {
             sendData(new apiURL("postLogformURL", context), params);
@@ -77,6 +77,16 @@ public class Token {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public JSONObject getMenu(){
+        try {
+            sendData(new apiURL("getMenuURL", this.c), getTokenValue());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this.data;
     }
 
     public boolean isValid(){
@@ -148,97 +158,15 @@ public class Token {
                 break;
             case "getUserInfoURL":
                 mainActivity.userInfoData = getData();
+                break;
+            case "getMenuURL":
+                mainActivity.menuData = getData();
+                break;
             default:
                 break;
         }
 
 
-    }
-
-
-    public static class HttpRequest extends AsyncTask<String, Void, Void> {
-
-        JSONObject JSONdata;
-        String type;
-        apiURL url;
-
-
-        public HttpRequest(apiURL url){
-            this.url = url;
-            this.type = url.getMethod();
-        }
-
-        public DefaultHttpClient getHttpClient(){
-            HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-
-            DefaultHttpClient client = new DefaultHttpClient();
-
-            SchemeRegistry registry = new SchemeRegistry();
-            SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
-            socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
-            registry.register(new Scheme("https", socketFactory, 443));
-            SingleClientConnManager mgr = new SingleClientConnManager(client.getParams(), registry);
-            HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
-            return new DefaultHttpClient(mgr, client.getParams());
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            try {
-                sendData(params);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        public void sendData(String...params) throws JSONException, IOException {
-
-            // Create a new HttpClient and Post Header
-            DefaultHttpClient httpclient = this.getHttpClient();
-            String json;
-            HttpResponse response;
-
-            if (this.type.equals("POST")){
-                HttpPost httppost = new HttpPost(this.url.getURL());
-                // Add your data
-                httppost.setEntity(new UrlEncodedFormEntity(this.url.getPOSTinfo(params), "UTF-8"));
-                // Execute HTTP Post Request
-                response = httpclient.execute(httppost);
-            }
-            else{
-
-                HttpGet httpget = new HttpGet(this.url.getGETinfo(params[0]));
-                response = httpclient.execute(httpget);
-            }
-            json = EntityUtils.toString(response.getEntity());
-            Log.v("réponse du serveur: ", json);
-            this.JSONdata = new JSONObject(json);
-            switch(this.url.getKey()){
-                case "postLogformURL":
-                    mainActivity.tokenData = this.JSONdata;
-                    break;
-                case "postOrderURL":
-                    mainActivity.postOrderData = this.JSONdata;
-                    break;
-                case "getTokenCheckURL":
-                    mainActivity.isTokenValid = Boolean.valueOf(JSONdata.getString("value"));
-                    break;
-                case "getUserInfoURL":
-                    mainActivity.userInfoData = this.JSONdata;
-                default:
-                    break;
-            }
-
-
-        }
-
-        protected void onPostExecute(Long result) {
-
-
-        }
     }
 
 }

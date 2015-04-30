@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ public class OrderFragment extends Fragment {
 
 
     private OnFragmentInteractionListener mListener;
+    private ListView listView;
+    private Menu menu;
 
     /**
      * Use this factory method to create a new instance of
@@ -66,6 +69,7 @@ public class OrderFragment extends Fragment {
             token = getArguments().getString(ARG_TOKEN);
         }
         this.userInfo = new UserInfo(mainActivity.userInfoData);
+        this.menu = new Menu(mainActivity.menuData);
     }
 
     @Override
@@ -75,6 +79,8 @@ public class OrderFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_order, container, false);
         TextView solde = (TextView)rootView.findViewById(R.id.txt_solde);
         solde.setText(userInfo.getCredit() + "€");
+        listView = (ListView)rootView.findViewById(R.id.lv_menu);
+        listView.setAdapter(new MenuAdapter(getActivity(), menu));
         return rootView;
     }
 

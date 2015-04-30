@@ -16,6 +16,8 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Valider</string>
+    <string name="cancel">Annuler</string>
+    <string name="comment">commentaire...</string>
     <string name="remember_me">Mémoriser mon mot de passe</string>
     <string name="title_login">CONNEXION</string>
     <string name="title_accueil">ACCUEIL</string>
@@ -29,6 +31,9 @@
     <string name="lbl_name">Nom</string>
     <string name="connecting">Connexion en cours...</string>
     <string name="deconnexion">Se déconnecter</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="total">Total</string>
+    <string name="voir">Voir</string>
 
     <!--Names for Url requests-->
     <string name="baseURL">https://www.drinkiit.fr</string>

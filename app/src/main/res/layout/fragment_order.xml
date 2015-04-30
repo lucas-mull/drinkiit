@@ -1,51 +1,104 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="bbqcreations.drinkiit.OrderFragment"
-    android:background="@drawable/bg_image">
+    android:orientation="vertical"
+    android:background="@drawable/bg_image"
+    android:weightSum="7">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="450sp"
-        android:id="@+id/listView"
-        android:layout_gravity="center" />
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="50sp"
-        android:layout_gravity="center_horizontal|top"
-        android:background="#ffffffff">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#ffffffff"
+        android:layout_weight="0.5"
+        android:weightSum="3">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/title_commander"
             android:text="@string/title_order"
             android:textColor="#ff69210e"
             android:textSize="30sp"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:paddingBottom="5sp" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="25sp"
+            android:layout_height="wrap_content"
             android:text="@string/lbl_solde"
             android:id="@+id/lbl_solde"
             android:textSize="15sp"
             android:textAlignment="center"
             android:gravity="center|left|top"
             android:layout_alignParentEnd="false"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:layout_weight="0.5" />
 
         <TextView
-            android:layout_width="40sp"
-            android:layout_height="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/txt_solde"
-            android:layout_gravity="right|top"
             android:layout_alignParentBottom="true"
             android:layout_alignLeft="@+id/lbl_solde"
-            android:layout_alignStart="@+id/lbl_solde" />
+            android:layout_alignStart="@+id/lbl_solde"
+            android:layout_weight="0.5" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</FrameLayout>
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/border_top"
+        android:layout_marginBottom="5sp">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/lv_menu" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0.5"
+        android:weightSum="3"
+        android:background="@drawable/border_top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/total"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="0.0€"
+            android:id="@+id/txt_order_total" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/voir"
+            style="@style/button"
+            android:layout_weight="1"
+            android:layout_margin="5sp" />
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

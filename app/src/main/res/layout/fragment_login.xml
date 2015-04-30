@@ -1,18 +1,35 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="bbqcreations.drinkiit.LoginFragment"
+    android:orientation="vertical"
     android:background="@drawable/bg_image">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/fl_login">
+        android:orientation="vertical"
+        android:id="@+id/ll_login"
+        android:weightSum="7"
+        android:visibility="visible">
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="430sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+            <TextView
+                style="@style/title"
+                android:text="@string/title_login"
+                android:id="@+id/title_login" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/border_top">
+            android:background="@drawable/border_top"
+            android:layout_weight="6"
+            android:layout_marginTop="10sp">
 
             <EditText
                 android:layout_width="wrap_content"
@@ -38,44 +55,37 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/cb_remember_passwd"
                 android:layout_gravity="center_horizontal|bottom"
-                android:text="@string/remember_me"
-                android:layout_marginBottom="50sp" />
+                android:text="@string/remember_me" />
 
         </FrameLayout>
-
-
-
-        <Button
-            style="@style/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/submit"
-            android:id="@+id/btn_submit_form"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="20sp"
-            android:onClick="httprequest"
-            android:nestedScrollingEnabled="false" />
-
-
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="50sp"
-            android:layout_gravity="center_horizontal|top">
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
 
-            <TextView
-                style="@style/title"
-                android:text="@string/title_login"
-                android:id="@+id/title_login" />
+            <Button
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit"
+                android:id="@+id/btn_submit_form"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="20sp"
+                android:onClick="httprequest"
+                android:nestedScrollingEnabled="false" />
         </FrameLayout>
 
-     </FrameLayout>
+     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/fl_loading"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:id="@+id/ll_loading"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -84,17 +94,16 @@
             android:id="@+id/pb_login"
             android:layout_gravity="center" />
 
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
             android:layout_gravity="center"
-            android:layout_marginTop="100sp"
-            android:text="@string/connecting" />
+            android:text="@string/connecting"
+            android:layout_marginTop="50sp" />
 
-    </FrameLayout>
+    </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>
 
 
 

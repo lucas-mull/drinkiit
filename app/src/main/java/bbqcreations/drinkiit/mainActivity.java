@@ -19,14 +19,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 
 public class mainActivity extends ActionBarActivity
@@ -39,9 +37,7 @@ public class mainActivity extends ActionBarActivity
     public static JSONObject userInfoData;
     public static JSONObject menuData;
     public static boolean isTokenValid;
-
-
-    private boolean isConnected;
+    public static boolean isConnected;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -73,7 +69,6 @@ public class mainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         Fragment new_fragment;
-        FragmentManager fragmentManager = getSupportFragmentManager();
         Token current = null;
         if (isConnected && (position == 1 || position == 2 || position == 3)){
             try {
@@ -121,6 +116,11 @@ public class mainActivity extends ActionBarActivity
                 new_fragment = PlaceholderFragment.newInstance(position + 1);
                 break;
         }
+        this.replaceFragment(new_fragment);
+    }
+
+    private void replaceFragment(Fragment new_fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, new_fragment)
                 .commit();
@@ -218,7 +218,7 @@ public class mainActivity extends ActionBarActivity
                 });
                 Token response = new Token();
                 try{
-                    response.GetToken(current_context, params);
+                    response.getTokenFromRequest(current_context, params);
                 }
                 // If IOException is thrown, it means the connection attempt failed
                 catch (IOException e){
@@ -230,6 +230,7 @@ public class mainActivity extends ActionBarActivity
                     isTokenValid = true;
                     isConnected = true;
                     response.getUserInfo();
+                    response.getMenu();
                 }
                 else
                     isTokenValid = false;
@@ -263,7 +264,7 @@ public class mainActivity extends ActionBarActivity
                     String res = tokenData.getString("type");
                     if (res.equals("success")){
                         Toast.makeText(current_context, "Connexion réussie !", Toast.LENGTH_SHORT).show();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AccueilFragment.newInstance(1)).commit();
+                        replaceFragment(AccueilFragment.newInstance(1));
                         mNavigationDrawerFragment.changeDrawerLayout();
                         mTitle = getString(R.string.title_section1);
                         restoreActionBar();
@@ -283,16 +284,23 @@ public class mainActivity extends ActionBarActivity
 
     }
 
+    public void logOut(View v){
+        this.replaceFragment(AccueilFragment.newInstance(1));
+        this.mNavigationDrawerFragment.restoreDrawerLayout();
+        Toast.makeText(this, "Vous vous êtes déconnecté", Toast.LENGTH_SHORT).show();
+        isConnected = false;
+    }
+
     private void resetLoginFragment(){
-        FrameLayout frame_log = (FrameLayout)(findViewById(R.id.fl_login));
-        FrameLayout frame_load = (FrameLayout)(findViewById(R.id.fl_loading));
+        LinearLayout frame_log = (LinearLayout)(findViewById(R.id.ll_login));
+        LinearLayout frame_load = (LinearLayout)(findViewById(R.id.ll_loading));
         frame_log.setVisibility(View.VISIBLE);
         frame_load.setVisibility(View.GONE);
     }
 
     private void hideLoginFragment(){
-        FrameLayout frame_log = (FrameLayout)(findViewById(R.id.fl_login));
-        FrameLayout frame_load = (FrameLayout)(findViewById(R.id.fl_loading));
+        LinearLayout frame_log = (LinearLayout)(findViewById(R.id.ll_login));
+        LinearLayout frame_load = (LinearLayout)(findViewById(R.id.ll_loading));
         frame_log.setVisibility(View.GONE);
         frame_load.setVisibility(View.VISIBLE);
     }
@@ -318,6 +326,7 @@ public class mainActivity extends ActionBarActivity
             fragment.setArguments(args);
             return fragment;
         }
+
 
         public PlaceholderFragment() {
         }

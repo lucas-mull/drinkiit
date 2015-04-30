@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -18,11 +21,9 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class AccueilFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    // TODO: Rename and change types of parameters
     private int section_number;
 
     private OnFragmentInteractionListener mListener;
@@ -34,7 +35,6 @@ public class AccueilFragment extends Fragment {
      * @param sectionNumber the fragment section's number.
      * @return A new instance of fragment AccueilFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AccueilFragment newInstance(int sectionNumber) {
         AccueilFragment fragment = new AccueilFragment();
         Bundle args = new Bundle();
@@ -59,14 +59,15 @@ public class AccueilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_accueil, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        View rootView = inflater.inflate(R.layout.fragment_accueil, container, false);
+        TextView user = (TextView)rootView.findViewById(R.id.txt_accueil_name);
+        if (mainActivity.isConnected){
+            UserInfo ui = new UserInfo(mainActivity.userInfoData);
+            user.setText(ui.getName());
         }
+        else
+        user.setText("bel inconnu");
+        return rootView;
     }
 
     @Override
