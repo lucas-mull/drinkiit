@@ -1,5 +1,8 @@
 package bbqcreations.drinkiit;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by lucas on 30/04/15.
  */
@@ -37,7 +40,7 @@ public class Order {
         return meal;
     }
 
-    public void setMealId(Meal meal) {
+    public void setMeal(Meal meal) {
         this.meal = meal;
     }
 
@@ -48,4 +51,10 @@ public class Order {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public String[] getFormData(){
+        String meal_id = this.getMeal().getId() + "";
+        return new String[]{getToken(), meal_id, getQty() + "", getComment()};
+    }
+
 }

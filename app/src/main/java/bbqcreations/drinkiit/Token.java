@@ -84,6 +84,21 @@ public class Token {
             e.printStackTrace();
         }
     }
+
+    public boolean postOrderData(Context context, String... params) throws IOException{
+        this.setContext(context);
+        try {
+            sendData(new apiURL("postOrderURL", context), params);
+            if (getData().getString("type").equals("success"))
+                return true;
+            else
+                return false;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public JSONObject getMenu(){
         try {
             sendData(new apiURL("getMenuURL", this.c), getValue());
@@ -155,9 +170,6 @@ public class Token {
         switch(url.getKey()){
             case "postLogformURL":
                 mainActivity.tokenData = getData();
-                break;
-            case "postOrderURL":
-                mainActivity.postOrderData = getData();
                 break;
             case "getTokenCheckURL":
                 mainActivity.isTokenValid = Boolean.valueOf(getData().getString("value"));

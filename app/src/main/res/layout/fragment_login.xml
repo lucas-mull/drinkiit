@@ -38,7 +38,7 @@
                 android:ems="10"
                 android:id="@+id/txt_email"
                 android:layout_gravity="center"
-                android:text="lucas.mull@hotmail.fr" />
+                android:text="jonathan@hurter.fr" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                 android:id="@+id/txt_passwd"
                 android:layout_gravity="center"
                 android:layout_marginTop="50sp"
-                android:text="gtrefaim" />
+                android:text="5HEBTvzX" />
 
             <CheckBox
                 android:layout_width="wrap_content"

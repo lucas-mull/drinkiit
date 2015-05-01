@@ -301,6 +301,10 @@ public class NavigationDrawerFragment extends Fragment {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
+    public int getCurrentSelectedPosition(){
+        return this.mCurrentSelectedPosition;
+    }
+
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */

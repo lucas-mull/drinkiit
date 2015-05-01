@@ -1,104 +1,154 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="bbqcreations.drinkiit.OrderFragment"
-    android:orientation="vertical"
-    android:background="@drawable/bg_image"
-    android:weightSum="7">
+    android:background="@drawable/bg_image">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#ffffffff"
-        android:layout_weight="0.5"
-        android:weightSum="3">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="7"
+        android:id="@+id/ll_menu">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/title_commander"
-            android:text="@string/title_order"
-            android:textColor="#ff69210e"
-            android:textSize="30sp"
-            android:layout_centerInParent="true"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:paddingBottom="5sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_solde"
-            android:id="@+id/lbl_solde"
-            android:textSize="15sp"
-            android:textAlignment="center"
-            android:gravity="center|left|top"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentRight="true"
-            android:layout_weight="0.5" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_solde"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/lbl_solde"
-            android:layout_alignStart="@+id/lbl_solde"
-            android:layout_weight="0.5" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="6"
-        android:layout_marginTop="5sp"
-        android:background="@drawable/border_top"
-        android:layout_marginBottom="5sp">
-
-        <ListView
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/lv_menu" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#ffffffff"
+            android:layout_weight="0.2"
+            android:weightSum="3">
 
-    </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_commander"
+                android:text="@string/title_order"
+                android:textColor="#ff69210e"
+                android:textSize="30sp"
+                android:layout_centerInParent="true"
+                android:layout_weight="2"
+                android:gravity="center|top"
+                android:layout_gravity="center"
+                android:padding="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_solde"
+                android:id="@+id/lbl_solde"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:gravity="center|left|top"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="true"
+                android:layout_weight="0.5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_solde"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/lbl_solde"
+                android:layout_alignStart="@+id/lbl_solde"
+                android:layout_weight="0.5" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:layout_marginTop="5sp"
+            android:background="@drawable/border_top"
+            android:layout_marginBottom="5sp">
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:descendantFocusability="beforeDescendants"
+                android:id="@+id/lv_menu" />
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/lv_preorder"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="0.5"
+            android:weightSum="3"
+            android:background="@drawable/border_top"
+            android:id="@+id/ll_order_bottom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="@string/total"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="0.0€"
+                android:id="@+id/txt_order_total"
+                android:gravity="center" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/voir"
+                style="@style/button"
+                android:id="@+id/btn_order_check"
+                android:layout_weight="1"
+                android:layout_margin="5sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:onClick="checkOrder" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit"
+                style="@style/button"
+                android:id="@+id/btn_order_submit"
+                android:layout_weight="1"
+                android:layout_margin="5sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:onClick="sendOrder" />
+
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="0.5"
-        android:weightSum="3"
-        android:background="@drawable/border_top">
+        android:background="@drawable/border_top"
+        android:visibility="gone"
+        android:id="@+id/ll_order_bottom_loading">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="@string/total"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="0.0€"
-            android:id="@+id/txt_order_total" />
-
-        <Button
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/voir"
-            style="@style/button"
-            android:layout_weight="1"
-            android:layout_margin="5sp" />
+            android:indeterminate="true"
+            android:id="@+id/pb_order" />
+
 
 
     </LinearLayout>
 
 
+    </LinearLayout>
 
 
-
-</LinearLayout>
+</FrameLayout>

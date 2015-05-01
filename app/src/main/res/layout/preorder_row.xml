@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:weightSum="2.1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/txt_preorder_qty"
+            android:layout_weight="0.5"
+            android:textSize="15sp"
+            android:gravity="center|left" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/txt_preorder_meal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/txt_preorder_price"
+            android:layout_weight="0.5"
+            android:textSize="15sp"
+            android:gravity="center|right" />
+
+        <Button
+            style="@style/button_delete"
+            android:layout_width="66dp"
+            android:layout_height="fill_parent"
+            android:textSize="15sp"
+            android:text="X"
+            android:id="@+id/btn_preorder_remove"
+            android:layout_margin="5sp"
+            android:onClick="removeOrder" />
+
+    </LinearLayout>
+</FrameLayout>

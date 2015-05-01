@@ -1,10 +1,15 @@
 package bbqcreations.drinkiit;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,16 +17,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
-
-import bbqcreations.drinkiit.R;
 
 /**
  * Created by lucas on 30/04/15.
  */
 public class MenuAdapter extends BaseAdapter {
+
+    public static class ViewHolder{
+        TextView name;
+        TextView description;
+        TextView price;
+        TextView comment;
+        Button add;
+        Button cancel;
+    }
 
     Context context;
     Menu data;
@@ -32,8 +43,7 @@ public class MenuAdapter extends BaseAdapter {
     public MenuAdapter(Context context, Menu data){
         this.context = context;
         this.data = data;
-        inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -55,8 +65,7 @@ public class MenuAdapter extends BaseAdapter {
         return this.orders;
     }
 
-    public boolean hasEnoughMoneyFor(Order order){
-        UserInfo ui = new UserInfo(mainActivity.userInfoData);
+    public double getCurrentTotal(){
         double sum = 0;
         if (orders.size() != 0){
             for (int i = 0; i < orders.size(); i++){
@@ -64,8 +73,25 @@ public class MenuAdapter extends BaseAdapter {
                 sum += (cur.getMeal().getPrice() * cur.getQty());
             }
         }
+        BigDecimal d = new BigDecimal(sum);
+        sum = d.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+        Log.v("sum", "" + sum);
+        return sum;
+    }
+
+    public void emptyOrderList(){
+        while (orders.size() > 0)
+            orders.remove(0);
+        TextView total = (TextView)((mainActivity)context).findViewById(R.id.txt_order_total);
+        total.setText("0.0€");
+    }
+
+    public boolean hasEnoughMoneyFor(Order order){
+        UserInfo ui = new UserInfo(mainActivity.userInfoData);
+        double sum = getCurrentTotal();
         sum += (order.getMeal().getPrice() * order.getQty());
-        if (ui.getCredit() >= sum)
+//        if (ui.getCredit() >= sum)
+        if (30 >= sum)
             return true;
         else
             return false;
@@ -73,20 +99,30 @@ public class MenuAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View vi = convertView;
         final Meal cur = data.getMeal(position);
-        if (vi == null)
-            vi = inflater.inflate(R.layout.row, null);
-        vi.setTag(position);
-        final View fView = vi;
-        TextView name = (TextView)vi.findViewById(R.id.txt_product_name);
-        TextView description = (TextView)vi.findViewById(R.id.txt_product_description);
-        TextView price = (TextView)vi.findViewById(R.id.txt_product_price);
+        ViewHolder holder;
+        if (convertView == null){
+            convertView = inflater.inflate(R.layout.menu_row, null);
+            holder = new ViewHolder();
+            holder.name = (TextView)convertView.findViewById(R.id.txt_product_name);
+            holder.description = (TextView)convertView.findViewById(R.id.txt_product_description);
+            holder.price = (TextView)convertView.findViewById(R.id.txt_product_price);
+            holder.add = (Button)convertView.findViewById(R.id.btn_order_add);
+            holder.cancel = (Button)convertView.findViewById(R.id.btn_order_cancel);
+            holder.comment = (TextView)convertView.findViewById(R.id.edtxt_order_comment);
+            convertView.setTag(holder);
+        } else{
+            holder = (ViewHolder) convertView.getTag();
+        }
+        final View fView = convertView;
+        TextView name = holder.name;
+        TextView description = holder.description;
+        TextView price = holder.price;
         name.setText(cur.getName().toUpperCase());
         description.setText(cur.getDescription());
         price.setText(cur.getPrice() + "€");
-        Button addBtn = (Button)vi.findViewById(R.id.btn_order_add);
-        Button cancelBtn = (Button)vi.findViewById(R.id.btn_order_cancel);
+        Button addBtn = holder.add;
+        Button cancelBtn = holder.cancel;
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,18 +130,16 @@ public class MenuAdapter extends BaseAdapter {
                 Token token = new Token(mainActivity.tokenData);
                 int quantity = getQuantity(fView);
                 String comment = getComment(fView);
-                if (quantity != 0)
-                {
-                    Order o = new Order(token.getValue(), cur, quantity, comment);
-                    if (hasEnoughMoneyFor(o)){
-                        orders.add(o);
-                        Toast.makeText(context, quantity + " " + cur.getName() + " ajouté(s)", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                        Toast.makeText(context, "Pas assez d'argent !", Toast.LENGTH_SHORT).show();
-
-                    unSelectItem(fView);
+                Order o = new Order(token.getValue(), cur, quantity, comment);
+                if (hasEnoughMoneyFor(o)){
+                    orders.add(o);
+                    mainActivity.commandes = getOrders();
+                    Toast.makeText(context, quantity + " " + cur.getName() + " ajouté(s)", Toast.LENGTH_SHORT).show();
                 }
+                else
+                    Toast.makeText(context, "Pas assez d'argent !", Toast.LENGTH_SHORT).show();
+
+                unSelectItem(fView);
 
             }
         });
@@ -116,11 +150,44 @@ public class MenuAdapter extends BaseAdapter {
                 unSelectItem(fView);
             }
         });
-        return vi;
+
+        final TextView comment = holder.comment;
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder message = new AlertDialog.Builder(context);
+                message.setTitle("Saisissez le commentaire");
+                final EditText input = new EditText(context);
+                message.setView(input);
+                message.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String value = input.getText().toString();
+                        comment.setText(value);
+                        // hide keyboard
+                        Activity a = (mainActivity) context;
+                        InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.hideSoftInputFromWindow(input.getWindowToken(), 0);
+                    }
+                });
+
+                message.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Activity a = (mainActivity) context;
+                        InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.hideSoftInputFromWindow(input.getWindowToken(), 0);
+                        // Canceled.
+                    }
+                });
+                showKeyboard();
+                message.show();
+            }
+        });
+
+        return convertView;
     }
 
     private String getComment(View item){
-        EditText comment = (EditText)item.findViewById(R.id.edtxt_order_comment);
+        TextView comment = (TextView)item.findViewById(R.id.edtxt_order_comment);
         String result = comment.getText().toString();
         if (result == null)
             result = "";
@@ -128,13 +195,8 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     private int getQuantity(View item){
-        EditText qty = (EditText)item.findViewById(R.id.edtxt_order_qty);
-        try{
-            return Integer.parseInt(qty.getText().toString());
-        } catch (Exception e){
-            Toast.makeText(context, "Veuillez rentrez une quantité valide", Toast.LENGTH_SHORT).show();
-        }
-        return 0;
+        TextView qty = (TextView)item.findViewById(R.id.txt_order_qty);
+        return Integer.parseInt(qty.getText().toString());
     }
 
     public void unSelectItem(View v){
@@ -142,6 +204,25 @@ public class MenuAdapter extends BaseAdapter {
         LinearLayout ll_clicked = (LinearLayout)v.findViewById(R.id.ll_product_clicked);
         ll_clicked.setVisibility(View.GONE);
         base_ll.setVisibility(View.VISIBLE);
+        if (getCurrentTotal() != 0){
+            TextView total = (TextView)((mainActivity)context).findViewById(R.id.txt_order_total);
+            total.setTag(getCurrentTotal());
+            total.setText(getCurrentTotal() + "€");
+        }
         OrderFragment.selectedItem = null;
+    }
+
+    public void showKeyboard(){
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+    }
+
+    public void hideKeyboard(){
+        Activity a = (mainActivity) context;
+        View v = a.getCurrentFocus();
+        if (v != null){
+            InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 }

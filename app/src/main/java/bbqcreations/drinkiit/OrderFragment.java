@@ -1,14 +1,15 @@
 package bbqcreations.drinkiit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -88,7 +89,6 @@ public class OrderFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("View triggered: ", view.getTag() + "");
                 selectItem(view);
             }
         });
@@ -110,6 +110,15 @@ public class OrderFragment extends Fragment {
         LinearLayout ll_clicked = (LinearLayout)v.findViewById(R.id.ll_product_clicked);
         ll_clicked.setVisibility(View.GONE);
         base_ll.setVisibility(View.VISIBLE);
+    }
+
+    public void hideKeyboard(){
+        Activity a = getActivity();
+        View v = a.getCurrentFocus();
+        if (v != null){
+            InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
