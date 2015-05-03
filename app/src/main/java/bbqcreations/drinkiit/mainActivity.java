@@ -24,16 +24,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * La seule activité de l'application. C'est elle qui se lance au démarrage de l'application. Tous les changements d'écran se font ensuite
@@ -85,6 +84,19 @@ public class mainActivity extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+        final Context context = this;
+
+        if (isConnected){
+            new AsyncTask<Void, Void, Void>(){
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    Token current = new Token(tokenData, context);
+                    isTokenValid = current.isValid();
+                    return null;
+                }
+            }.execute();
+        }
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -199,7 +211,7 @@ public class mainActivity extends ActionBarActivity
      */
     private Fragment connexionExpiredFragment(){
         Fragment new_fragment = AccueilFragment.newInstance(1);
-        mNavigationDrawerFragment.restoreDrawerLayout();
+        mNavigationDrawerFragment.notConnectedDrawerLayout();
         Toast.makeText(this, "Votre connexion a expirée...", Toast.LENGTH_SHORT).show();
         resetAllStaticInfo();
         return new_fragment;
@@ -279,7 +291,7 @@ public class mainActivity extends ActionBarActivity
                 super.onBackPressed();
         }
         else if (this.backCount == 0){
-            Toast.makeText(this, "Rappuyez pour quitter (vous serez déconnectés)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rappuyez pour quitter", Toast.LENGTH_SHORT).show();
             this.backCount = 1;
         }
         else
@@ -429,7 +441,7 @@ public class mainActivity extends ActionBarActivity
                 if (isConnected){
                     Toast.makeText(current_context, "Connexion réussie !", Toast.LENGTH_SHORT).show();
                     replaceFragment(AccueilFragment.newInstance(1), 0);
-                    mNavigationDrawerFragment.changeDrawerLayout();
+                    mNavigationDrawerFragment.connectedDrawerLayout();
                     mTitle = getString(R.string.title_section1);
                     restoreActionBar();
                 }
@@ -450,7 +462,7 @@ public class mainActivity extends ActionBarActivity
         if (caller.getId() == R.id.btn_accueil_connexion)
             this.replaceFragment(LoginFragment.newInstance(2), 1);
         else{
-            Token token = new Token(tokenData);
+            Token token = new Token(tokenData, this);
             this.replaceFragment(OrderFragment.newInstance(2, token.getValue()), 1);
         }
     }
@@ -475,7 +487,7 @@ public class mainActivity extends ActionBarActivity
      */
     public void logOut(View v){
         this.replaceFragment(AccueilFragment.newInstance(1), 0);
-        this.mNavigationDrawerFragment.restoreDrawerLayout();
+        this.mNavigationDrawerFragment.notConnectedDrawerLayout();
         Toast.makeText(this, "Vous vous êtes déconnecté", Toast.LENGTH_SHORT).show();
         resetAllStaticInfo();
     }
@@ -558,7 +570,7 @@ public class mainActivity extends ActionBarActivity
                         displayOrdersLoading();
                     }
                 });
-                Token current_token= new Token(tokenData);
+                Token current_token= new Token(tokenData, context);
                 int size = commandes.size();
                 int erreur = 0;
                 Log.v("nbCommandes", "" + commandes.size());
@@ -566,7 +578,7 @@ public class mainActivity extends ActionBarActivity
                     Order current_order = commandes.get(erreur);
                     boolean result = false;
                     try {
-                        result = current_token.postOrderData(context, current_order.getFormData());
+                        result = current_token.postOrderData(current_order.getFormData());
                     } catch (IOException e) {
                         this.cancel(true);
                     }

@@ -5,9 +5,20 @@ Passer une commande - DONE
 Récupérer les commandes en cours - DONE
 Récupérer / Voir le menu - DONE
 
-Page d'accueil
+Page d'accueil	- DONE
 Design général
-Design menu coulissant
+Design menu coulissant - DONE
 Trouver une solution pour ne pas faire lagger le menu coulissant
-Régler le problème d'affichage des commandes en cours (problème d'alignement)
+Régler le problème d'affichage des commandes en cours (problème d'alignement) - DONE (plus ou moins)
 Faire des tests sur d'autres téléphones
+Enlever la rotation sur l'appli
+Rajouter l' écran des préférences pour les commandes
+
+
+KNOWN BUGS:
+
+- Infos utilisateurs non remises à jour quand on va dans "mon compte"
+- TextView commentaire trop petite ?
+- pas de drawable onpressed sur les boutons +/- pour la quantité
+- Ecran login pas responsive
+- Mémoriser le mdp ne marche pas toujours au redémarrage ? (forcer le cochage de la cb)

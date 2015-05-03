@@ -86,9 +86,9 @@ public class OrderFragment extends Fragment {
         TextView solde = (TextView)rootView.findViewById(R.id.txt_solde);
         solde.setText(userInfo.getCredit() + "€");
         if (userInfo.getCredit() > 0)
-            solde.setTextColor(Color.GREEN);
+            solde.setTextColor(Color.parseColor("#27ae60"));
         else
-            solde.setTextColor(Color.RED);
+            solde.setTextColor(Color.parseColor("#c0392b"));
         listView = (ListView)rootView.findViewById(R.id.lv_menu);
         listView.setAdapter(new MenuAdapter(getActivity(), menu));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

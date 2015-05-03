@@ -1,6 +1,5 @@
 package bbqcreations.drinkiit;
 
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -98,21 +97,15 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                R.layout.drawer_item,
-                R.id.txt_drawer_section,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-//                        getString(R.string.title_section4),
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        if (!mainActivity.isConnected){
+            notConnectedDrawerLayout();
+        }
+        else
+            connectedDrawerLayout();
         return mDrawerListView;
     }
 
-    public void restoreDrawerLayout(){
+    public void notConnectedDrawerLayout(){
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 R.layout.drawer_item,
@@ -121,12 +114,11 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
-//                        getString(R.string.title_section4),
                 }));
         mDrawerListView.setItemChecked(0, true);
     }
 
-    public void changeDrawerLayout(){
+    public void connectedDrawerLayout(){
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 R.layout.drawer_item,

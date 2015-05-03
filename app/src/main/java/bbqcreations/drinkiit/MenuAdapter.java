@@ -121,7 +121,7 @@ public class MenuAdapter extends BaseAdapter {
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Token token = new Token(mainActivity.tokenData);
+                Token token = new Token(mainActivity.tokenData, context);
                 int quantity = getQuantity(fView);
                 String comment = getComment(fView);
                 Order o = new Order(token.getValue(), cur, quantity, comment);

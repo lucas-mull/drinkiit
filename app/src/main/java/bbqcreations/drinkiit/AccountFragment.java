@@ -82,18 +82,18 @@ public class AccountFragment extends Fragment {
         email.setText(userInfo.getEmail());
         solde.setText("" + userInfo.getCredit() + "€");
         if (userInfo.isActivated()){
-            statut.setTextColor(Color.GREEN);
+            statut.setTextColor(Color.parseColor("#27ae60"));
             statut.setText("Activé");
         }
 
         else{
-            statut.setTextColor(Color.RED);
+            statut.setTextColor(Color.parseColor("#c0392b"));
             statut.setText("En attente d'activation");
         }
         if (userInfo.getCredit() <= 0)
-            solde.setTextColor(Color.RED);
+            solde.setTextColor(Color.parseColor("#c0392b"));
         else
-            solde.setTextColor(Color.GREEN);
+            solde.setTextColor(Color.parseColor("#27ae60"));
 
         return rootView;
     }

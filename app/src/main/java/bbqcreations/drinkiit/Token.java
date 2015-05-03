@@ -35,12 +35,13 @@ public class Token {
         //empty constructor, required to use getTokenFromRequest()
     }
 
-    public Token(JSONObject data){
+    public Token(JSONObject data, Context context){
         try {
             this.value = data.getString("data");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        this.c = context;
     }
 
     public Token(String token, Context context) {
@@ -85,10 +86,9 @@ public class Token {
         }
     }
 
-    public boolean postOrderData(Context context, String... params) throws IOException{
-        this.setContext(context);
+    public boolean postOrderData(String... params) throws IOException{
         try {
-            sendData(new apiURL("postOrderURL", context), params);
+            sendData(new apiURL("postOrderURL", this.c), params);
             if (getData().getString("type").equals("success"))
                 return true;
             else
@@ -122,14 +122,17 @@ public class Token {
     }
 
     public boolean isValid(){
+        boolean res = false;
         try {
             sendData(new apiURL("getTokenCheckURL", this.c), getValue());
+            if (getData().getString("type").equals("success"))
+                res = true;
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return mainActivity.isTokenValid;
+        return res;
     }
 
     public JSONObject getUserInfo(){
