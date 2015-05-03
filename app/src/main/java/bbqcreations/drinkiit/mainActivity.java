@@ -32,7 +32,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * La seule activité de l'application. C'est elle qui se lance au démarrage de l'application. Tous les changements d'écran se font ensuite
@@ -121,14 +120,11 @@ public class mainActivity extends ActionBarActivity
         Fragment new_fragment;
         // On crée un token (pour rappel un token permet de se connecter via le site drinkiit)
         Token current = null;
-        /* Si on est déjà connecté et que l'utilisateur a cliqué sur "commander", "mes commandes", ou "mon compte"
+        /* Si on est déjà connecté
         on va lancer un processus en arrière plan (AsyncTask dans android pour tâche asynchrone) qui va faire une requête http sur le site drinkiit
         pour savoir si le token utilisé préalablement pour la connexion est toujours valable (expire au bout de 5 min).
-        On lance uniquement l'AsyncTask pour les 3 cas cités précédemment puisque ce sont les seuls qui requièrent une requête http et donc
-        un token valide. Si le token n'est plus valide, la variable static isTokenValid est passée à false. On utilise une AsyncTask pour s'assurer
-        de ne pas ralentir la navigation pour rien.
          */
-        if (isConnected && (position == 1 || position == 2 || position == 3)){
+        if (isConnected){
             try {
                 current = new Token(tokenData.getString("data"), this);
             } catch (JSONException e) {
@@ -212,7 +208,7 @@ public class mainActivity extends ActionBarActivity
     private Fragment connexionExpiredFragment(){
         Fragment new_fragment = AccueilFragment.newInstance(1);
         mNavigationDrawerFragment.notConnectedDrawerLayout();
-        Toast.makeText(this, "Votre connexion a expirée...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.msg_connexion_expired), Toast.LENGTH_SHORT).show();
         resetAllStaticInfo();
         return new_fragment;
     }
@@ -237,22 +233,22 @@ public class mainActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_section_accueil);
                 break;
             case 2:
                 if (!isConnected)
-                    mTitle = getString(R.string.title_section2);
+                    mTitle = getString(R.string.title_section_login);
                 else
-                    mTitle = getString(R.string.title_section4);
+                    mTitle = getString(R.string.title_section_order);
                 break;
             case 3:
                 if (!isConnected)
-                    mTitle = getString(R.string.title_section3);
+                    mTitle = getString(R.string.title_section_about);
                 else
-                    mTitle = getString(R.string.title_section5);
+                    mTitle = getString(R.string.title_section_user_orders);
                 break;
             case 4:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.title_section_about);
                 break;
         }
     }
@@ -284,14 +280,14 @@ public class mainActivity extends ActionBarActivity
                 this.backCount = 0;
             }
             else if (this.backCount == 0){
-                Toast.makeText(this, "Rappuyez pour quitter (toute commande non validée sera perdue)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.msg_back_commande), Toast.LENGTH_SHORT).show();
                 this.backCount = 1;
             }
             else
                 super.onBackPressed();
         }
         else if (this.backCount == 0){
-            Toast.makeText(this, "Rappuyez pour quitter", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_back), Toast.LENGTH_SHORT).show();
             this.backCount = 1;
         }
         else
@@ -358,9 +354,10 @@ public class mainActivity extends ActionBarActivity
         final String email = form_email.getText().toString();
         final String passwd = form_passwd.getText().toString();
         if (email.equals("") || passwd.equals("")){
-            Toast.makeText(this, "Vous n'avez pas rempli tous les champs !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_login_missed_fields), Toast.LENGTH_SHORT).show();
             return;
         }
+        
 
         // On les met dans un tableau à passer en paramètre de l'AsyncTask.
         String args[] = new String[]{email, passwd};
@@ -402,9 +399,9 @@ public class mainActivity extends ActionBarActivity
                     isConnected = true;
                     SharedPreferences preferences = ((mainActivity)current_context).getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("email", email);
+                    editor.putString(getString(R.string.field_email), email);
                     if (isChecked)
-                        editor.putString("passwd", passwd);
+                        editor.putString(getString(R.string.field_password), passwd);
                     editor.commit();
 
                 }
@@ -439,17 +436,17 @@ public class mainActivity extends ActionBarActivity
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
                 if (isConnected){
-                    Toast.makeText(current_context, "Connexion réussie !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(current_context, getString(R.string.msg_login_success), Toast.LENGTH_SHORT).show();
                     replaceFragment(AccueilFragment.newInstance(1), 0);
                     mNavigationDrawerFragment.connectedDrawerLayout();
-                    mTitle = getString(R.string.title_section1);
+                    mTitle = getString(R.string.title_section_accueil);
                     restoreActionBar();
                 }
                 else{
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() { resetLoginFragment(); }});
-                    Toast.makeText(current_context, "Email ou mot de passe invalide !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(current_context, getString(R.string.msg_login_error), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -469,9 +466,9 @@ public class mainActivity extends ActionBarActivity
 
     public void showConnexionErrorDialog(){
         new AlertDialog.Builder(this)
-                .setTitle("Wooooops!")
-                .setMessage("Il semblerait que la requête n'ait pas atteint le serveur. Vérifiez que vous êtes bien connectés à Internet ou réessayez plus tard")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.title_no_connexion))
+                .setMessage(getString(R.string.msg_no_connexion))
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // événement nul, le clic sur le bouton ne fait que dismiss la boite de dialogue (ce qui nous suffit)
@@ -488,7 +485,7 @@ public class mainActivity extends ActionBarActivity
     public void logOut(View v){
         this.replaceFragment(AccueilFragment.newInstance(1), 0);
         this.mNavigationDrawerFragment.notConnectedDrawerLayout();
-        Toast.makeText(this, "Vous vous êtes déconnecté", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.msg_logout), Toast.LENGTH_SHORT).show();
         resetAllStaticInfo();
     }
 
@@ -537,7 +534,7 @@ public class mainActivity extends ActionBarActivity
         commandes.remove(position);
         ListView orders = (ListView)findViewById(R.id.lv_preorder);
         orders.setAdapter(new PreOrderAdapter(this, commandes));
-        Toast.makeText(this, "Plat supprimé", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.msg_deleted_meal), Toast.LENGTH_SHORT).show();
     }
 
     public void removeOrder(int position){
@@ -551,12 +548,12 @@ public class mainActivity extends ActionBarActivity
         commandes.remove(position);
         ListView orders = (ListView)findViewById(R.id.lv_preorder);
         orders.setAdapter(new PreOrderAdapter(this, commandes));
-        Toast.makeText(this, "Commande envoyée avec succès", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.msg_order_success), Toast.LENGTH_SHORT).show();
     }
 
     public void sendOrder(View v){
         if (commandes.size() == 0){
-            Toast.makeText(this, "Vous n'avez rien commandé !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_orders_empty), Toast.LENGTH_SHORT).show();
             return;
         }
         final Context context = this;
@@ -573,7 +570,6 @@ public class mainActivity extends ActionBarActivity
                 Token current_token= new Token(tokenData, context);
                 int size = commandes.size();
                 int erreur = 0;
-                Log.v("nbCommandes", "" + commandes.size());
                 for (int i = 0; i < size; i++){
                     Order current_order = commandes.get(erreur);
                     boolean result = false;
@@ -592,7 +588,12 @@ public class mainActivity extends ActionBarActivity
                         });
 
                     else{
-                        Toast.makeText(context, "Echec de l'envoi de la commande", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, getString(R.string.msg_order_error), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         erreur++;
                     }
                 }
@@ -618,7 +619,7 @@ public class mainActivity extends ActionBarActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(context, "Commandes mises à jour !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.msg_orders_updated), Toast.LENGTH_SHORT).show();
                         hideOrdersLoading();
                     }
                 });

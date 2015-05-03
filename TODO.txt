@@ -1,24 +1,17 @@
-Connexion - Récupération du TOKEN - DONE
-Récupération des informations de l'utilisateur - DONE
-Vérifier la validité du token - DONE
-Passer une commande - DONE
-Récupérer les commandes en cours - DONE
-Récupérer / Voir le menu - DONE
-
-Page d'accueil	- DONE
 Design général
-Design menu coulissant - DONE
+Design menu coulissant - Images ?
 Trouver une solution pour ne pas faire lagger le menu coulissant
 Régler le problème d'affichage des commandes en cours (problème d'alignement) - DONE (plus ou moins)
 Faire des tests sur d'autres téléphones
-Enlever la rotation sur l'appli
-Rajouter l' écran des préférences pour les commandes
+Enlever la rotation sur l'appli	 - DONE (temporary fix)
+Rajouter l' écran des préférences pour les commandes ?
+Design écran "mon compte"
 
 
 KNOWN BUGS:
 
 - Infos utilisateurs non remises à jour quand on va dans "mon compte"
 - TextView commentaire trop petite ?
-- pas de drawable onpressed sur les boutons +/- pour la quantité
-- Ecran login pas responsive
+- Ecran login pas responsive	- DONE
+- Retourner sur commander depuis l'écran de validation ne renvoie pas au menu
 - Mémoriser le mdp ne marche pas toujours au redémarrage ? (forcer le cochage de la cb)

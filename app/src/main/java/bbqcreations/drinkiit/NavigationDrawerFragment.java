@@ -111,9 +111,9 @@ public class NavigationDrawerFragment extends Fragment {
                 R.layout.drawer_item,
                 R.id.txt_drawer_section,
                 new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
+                        getString(R.string.title_section_accueil),
+                        getString(R.string.title_section_login),
+                        getString(R.string.title_section_about),
                 }));
         mDrawerListView.setItemChecked(0, true);
     }
@@ -124,11 +124,11 @@ public class NavigationDrawerFragment extends Fragment {
                 R.layout.drawer_item,
                 R.id.txt_drawer_section,
                 new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section4),
-                        getString(R.string.title_section5),
-                        getString(R.string.title_section6),
-                        getString(R.string.title_section3),
+                        getString(R.string.title_section_accueil),
+                        getString(R.string.title_section_order),
+                        getString(R.string.title_section_user_orders),
+                        getString(R.string.title_section_account),
+                        getString(R.string.title_section_about),
                 }));
         mDrawerListView.setItemChecked(0, true);
     }

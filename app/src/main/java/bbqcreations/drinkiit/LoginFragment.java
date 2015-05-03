@@ -81,13 +81,13 @@ public class LoginFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_login, container, false);
 
         final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String savedEmail = preferences.getString("email", null);
+        String savedEmail = preferences.getString(getString(R.string.field_email), null);
 //        Log.v("savedEmail", savedEmail);
         if (savedEmail != null){
             EditText form_email = (EditText)(rootView.findViewById(R.id.txt_email));
             form_email.setText(savedEmail);
             final EditText form_passwd = (EditText)(rootView.findViewById(R.id.txt_passwd));
-            String passwd = preferences.getString("passwd", null);
+            String passwd = preferences.getString(getString(R.string.field_password), null);
             if (passwd != null)
                 form_passwd.setText(passwd);
             form_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment {
                     if (!hasFocus){
                         form_passwd.setText(null);
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("passwd", null);
+                        editor.putString(getString(R.string.field_password), null);
                         editor.commit();
                     }
                 }

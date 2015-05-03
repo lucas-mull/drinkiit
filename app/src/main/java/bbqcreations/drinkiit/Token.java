@@ -125,8 +125,7 @@ public class Token {
         boolean res = false;
         try {
             sendData(new apiURL("getTokenCheckURL", this.c), getValue());
-            if (getData().getString("type").equals("success"))
-                res = true;
+            res = data.getBoolean("value");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {

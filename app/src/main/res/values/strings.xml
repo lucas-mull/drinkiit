@@ -2,44 +2,71 @@
 <resources>
     <!--noms de sections et de l'application-->
     <string name="app_name">Drinkiit</string>
-    <string name="title_section1">Accueil</string>
-    <string name="title_section2">Connexion</string>
-    <string name="title_section3">About</string>
-    <string name="title_section4">Commander</string>
-    <string name="title_section5">Mes commandes</string>
-    <string name="title_section6">Mon compte</string>
+    <string name="title_section_accueil">Accueil</string>
+    <string name="title_section_login">Connexion</string>
+    <string name="title_section_about">About</string>
+    <string name="title_section_order">Commander</string>
+    <string name="title_section_user_orders">Mes commandes</string>
+    <string name="title_section_account">Mon compte</string>
 
-    <!--Nom de vues et divers autres trucs-->
+    <!--Divers-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Règlages</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="submit">Valider</string>
-    <string name="cancel">Annuler</string>
-    <string name="add">Ajouter</string>
-    <string name="comment">commentaire...</string>
-    <string name="remember_me">Mémoriser mon mot de passe</string>
+
+    <!--Boutons et titres de sections-->
+    <string name="submit">VALIDER</string>
+    <string name="cancel">ANNULER</string>
+    <string name="add">AJOUTER</string>
+    <string name="voir">VOIR</string>
+    <string name="ok">OK</string>
     <string name="title_login">CONNEXION</string>
     <string name="title_accueil">ACCUEIL</string>
     <string name="title_about">A PROPOS</string>
     <string name="title_order">COMMANDER</string>
     <string name="title_my_orders">MES COMMANDES</string>
     <string name="title_my_account">MON COMPTE</string>
+
+    <!--Labels et hints-->
+    <string name="comment">commentaire...</string>
+    <string name="remember_me">Mémoriser mon mot de passe</string>
     <string name="lbl_solde">Solde</string>
     <string name="lbl_email">Email</string>
     <string name="lbl_activated">Statut</string>
     <string name="lbl_name">Nom</string>
-    <string name="connecting">Connexion en cours...</string>
-    <string name="deconnexion">Se déconnecter</string>
-    <string name="welcome">Bienvenue</string>
-    <string name="total">Total</string>
-    <string name="voir">Voir</string>
+    <string name="lbl_connecting">Connexion en cours...</string>
+    <string name="lbl_deconnexion">Se déconnecter</string>
+    <string name="lbl_welcome">Bienvenue</string>
+    <string name="lbl_total">Total</string>
     <string name="lbl_date">Date</string>
     <string name="lbl_commande">Commande</string>
     <string name="lbl_done">Servi</string>
 
-    <!--Names for Url requests-->
+    <!--Messages aux utilisateurs (toasts par ex.)-->
+    <string name="msg_back_commande">Rappuyez pour quitter (toute commande non validée sera perdue)</string>
+    <string name="msg_back">Rappuyez pour quitter</string>
+    <string name="msg_connexion_expired">Votre connexion a expirée...</string>
+    <string name="msg_login_missed_fields">Vous n\'avez pas rempli tous les champs !</string>
+    <string name="msg_login_success">Connexion réussie !</string>
+    <string name="msg_login_error">Email ou mot de passe invalide !</string>
+    <string name="msg_logout">Vous vous êtes déconnecté</string>
+    <string name="msg_deleted_meal">Plat supprimé</string>
+    <string name="msg_order_success">Commande envoyée avec succès</string>
+    <string name="msg_order_error">Echec de l\'envoi de la commande</string>
+    <string name="msg_orders_empty">Vous n\'avez rien commandé !</string>
+    <string name="msg_orders_updated">Commandes mises à jour !</string>
+
+    <!--Boites de dialogues-->
+    <string name="title_no_connexion">Wooooops...</string>
+    <string name="msg_no_connexion">Il semblerait que la requête n\'ait pas atteint le serveur. Vérifiez que vous êtes bien connectés à Internet ou réessayez plus tard</string>
+
+    <!--Noms des champs des sharedPreferences-->
+    <string name="field_email">email</string>
+    <string name="field_password">passwd</string>
+
+    <!--URLs pour les requêtes http-->
     <string name="baseURL">https://www.drinkiit.fr</string>
     <string name="postLogformURL">/api/token</string>
     <string name="postOrderURL">/api/order</string>

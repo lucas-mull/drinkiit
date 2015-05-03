@@ -172,7 +172,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/deconnexion"
+            android:text="@string/lbl_deconnexion"
             android:id="@+id/button"
             android:layout_gravity="center"
             style="@style/button"
