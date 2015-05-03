@@ -2,6 +2,7 @@ package bbqcreations.drinkiit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -84,6 +85,10 @@ public class OrderFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_order, container, false);
         TextView solde = (TextView)rootView.findViewById(R.id.txt_solde);
         solde.setText(userInfo.getCredit() + "€");
+        if (userInfo.getCredit() > 0)
+            solde.setTextColor(Color.GREEN);
+        else
+            solde.setTextColor(Color.RED);
         listView = (ListView)rootView.findViewById(R.id.lv_menu);
         listView.setAdapter(new MenuAdapter(getActivity(), menu));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

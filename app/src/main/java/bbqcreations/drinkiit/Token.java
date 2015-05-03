@@ -99,6 +99,17 @@ public class Token {
         return false;
     }
 
+    public JSONObject getUserOrders(){
+        try {
+            sendData(new apiURL("getUserOrdersURL", this.c), getValue());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this.data;
+    }
+
     public JSONObject getMenu(){
         try {
             sendData(new apiURL("getMenuURL", this.c), getValue());
@@ -171,14 +182,14 @@ public class Token {
             case "postLogformURL":
                 mainActivity.tokenData = getData();
                 break;
-            case "getTokenCheckURL":
-                mainActivity.isTokenValid = Boolean.valueOf(getData().getString("value"));
-                break;
             case "getUserInfoURL":
                 mainActivity.userInfoData = getData();
                 break;
             case "getMenuURL":
                 mainActivity.menuData = getData();
+                break;
+            case "getUserOrdersURL":
+                mainActivity.currentOrdersData = getData();
                 break;
             default:
                 break;

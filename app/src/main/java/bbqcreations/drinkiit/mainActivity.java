@@ -51,11 +51,13 @@ public class mainActivity extends ActionBarActivity
     public static JSONObject tokenData;     // JSON contenant les infos sur le token (essentiellement la valeur).
     public static JSONObject userInfoData;  // JSON contenant les infos de l'utilisateur.
     public static JSONObject menuData;      // JSON contenant les infos sur le menu.
+    public static JSONObject currentOrdersData; // JSON contenant les commandes récentes passées (validées) par l'utilisateur
     public static boolean isTokenValid = false; // true si le token courant est valide, false sinon
     public static boolean isConnected = false;  //true si l'utilisateur est connecté, false sinon.
     public static ArrayList<Order> commandes = new ArrayList<Order>(); // Liste contenant la commande actuelle.
 
     private int backCount = 0;  // Compteur représentant le nombre de fois où l'utilisateur a appuyé sur la touche "back" du téléphone d'affilée
+    private int currentPosition = 0; // Position du fragment actif dans l'activité
 
     /**
      * Fragment gérant les comportements, intéractions et présentation du menu coulissant
@@ -95,6 +97,12 @@ public class mainActivity extends ActionBarActivity
      */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        // Si on est à la même position, on ferme juste le tiroir pour éviter de recharger un fragment pour rien.
+        // On teste également que le menu existe, sinon cela signifie que c'est le lancement de l'appli.
+        if (mNavigationDrawerFragment != null){
+            if (position == currentPosition)
+                return;
+        }
         // On créée le fragment qui va être insérer dans la fenêtre
         Fragment new_fragment;
         // On crée un token (pour rappel un token permet de se connecter via le site drinkiit)
@@ -162,8 +170,9 @@ public class mainActivity extends ActionBarActivity
                 new_fragment = PlaceholderFragment.newInstance(position + 1);
                 break;
         }
-        // On remplace le fragment actuel par le nouveau.
-        this.replaceFragment(new_fragment);
+        // Et on remplace le fragment actuel par le nouveau.
+        this.replaceFragment(new_fragment, position);
+
     }
 
 
@@ -171,13 +180,14 @@ public class mainActivity extends ActionBarActivity
      * Simple méthode pour remplacer le fragment de la fenêtre actuelle.
      * @param new_fragment fragment qui va remplacer l'actuel.
      */
-    private void replaceFragment(Fragment new_fragment){
+    private void replaceFragment(Fragment new_fragment, int position){
         // On réinitialise backCount à 0 puisque le max est de 2 PAR FRAGMENT. Si on change de fragment, on réinitialise.
         this.backCount = 0;
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, new_fragment)
                 .commit();
+        currentPosition = position;
     }
 
     /**
@@ -251,7 +261,7 @@ public class mainActivity extends ActionBarActivity
      */
     @Override
     public void onBackPressed(){
-        int position = mNavigationDrawerFragment.getCurrentSelectedPosition();
+        int position = currentPosition;
         if (isConnected && position == 1){
             Button submit = (Button)findViewById(R.id.btn_order_submit);
             // Si submit est visible, cela signifie que l'utilisateur est sur l'écran de validation d'une commande
@@ -360,13 +370,14 @@ public class mainActivity extends ActionBarActivity
 
                 // Si la valeur du token n'est pas nulle, la connexion a réussi. On initialise les paramètres static en conséquence
                 if (response.getValue() != null){
-                    isTokenValid = true;
-                    isConnected = true;
                     /* On en profite pour récupérer directement les infos de l'utilisateur et le menu pour éviter d'avoir à les récupérer plus tard
                       (En effet cela fait beaucoup travailler l'application et ralentirait la navigation inutilement)
                      */
                     response.getUserInfo();
                     response.getMenu();
+                    response.getUserOrders();
+                    isTokenValid = true;
+                    isConnected = true;
                 }
                 // Sinon la connexion a échoué, on ne change rien
 
@@ -400,7 +411,7 @@ public class mainActivity extends ActionBarActivity
                 super.onPostExecute(result);
                 if (isConnected){
                     Toast.makeText(current_context, "Connexion réussie !", Toast.LENGTH_SHORT).show();
-                    replaceFragment(AccueilFragment.newInstance(1));
+                    replaceFragment(AccueilFragment.newInstance(1), 0);
                     mNavigationDrawerFragment.changeDrawerLayout();
                     mTitle = getString(R.string.title_section1);
                     restoreActionBar();
@@ -415,6 +426,16 @@ public class mainActivity extends ActionBarActivity
 
         }.execute(args);
 
+    }
+
+    public void goTo(View v){
+        Button caller = (Button)v;
+        if (caller.getId() == R.id.btn_accueil_connexion)
+            this.replaceFragment(LoginFragment.newInstance(2), 1);
+        else{
+            Token token = new Token(tokenData);
+            this.replaceFragment(OrderFragment.newInstance(2, token.getValue()), 1);
+        }
     }
 
     public void showConnexionErrorDialog(){
@@ -436,7 +457,7 @@ public class mainActivity extends ActionBarActivity
      * @param v bouton deconnexion
      */
     public void logOut(View v){
-        this.replaceFragment(AccueilFragment.newInstance(1));
+        this.replaceFragment(AccueilFragment.newInstance(1), 0);
         this.mNavigationDrawerFragment.restoreDrawerLayout();
         Toast.makeText(this, "Vous vous êtes déconnecté", Toast.LENGTH_SHORT).show();
         resetAllStaticInfo();
@@ -477,11 +498,11 @@ public class mainActivity extends ActionBarActivity
     public void removeOrder(View v){
         Button caller = (Button)v;
         int position = (int)v.getTag();
-        double priceToSubtract = commandes.get(position).getMeal().getPrice() * commandes.get(position).getQty();
+        double priceToSubtract = commandes.get(position).getMeal().getPrice() * (double) commandes.get(position).getQty();
         TextView total = (TextView)findViewById(R.id.txt_order_total);
         double updatedPrice = ((double)total.getTag()) - priceToSubtract;
-        BigDecimal inter = new BigDecimal(updatedPrice);
-        updatedPrice = inter.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+       /* BigDecimal inter = new BigDecimal(updatedPrice);
+        updatedPrice = inter.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();*/
         total.setTag(updatedPrice);
         total.setText(updatedPrice + "€");
         commandes.remove(position);
@@ -505,6 +526,10 @@ public class mainActivity extends ActionBarActivity
     }
 
     public void sendOrder(View v){
+        if (commandes.size() == 0){
+            Toast.makeText(this, "Vous n'avez rien commandé !", Toast.LENGTH_SHORT).show();
+            return;
+        }
         final Context context = this;
         new AsyncTask<Void, Void, Void>(){
 
@@ -541,8 +566,10 @@ public class mainActivity extends ActionBarActivity
                         Toast.makeText(context, "Echec de l'envoi de la commande", Toast.LENGTH_SHORT).show();
                         erreur++;
                     }
-
                 }
+                // On récupère directement les commandes de l'utilisateur puisqu'elles ont changé
+                current_token.getUserOrders();
+
                 return null;
             }
 
@@ -562,6 +589,7 @@ public class mainActivity extends ActionBarActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Toast.makeText(context, "Commandes mises à jour !", Toast.LENGTH_SHORT).show();
                         hideOrdersLoading();
                     }
                 });

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -64,6 +65,10 @@ public class AccueilFragment extends Fragment {
         if (mainActivity.isConnected){
             UserInfo ui = new UserInfo(mainActivity.userInfoData);
             user.setText(ui.getName());
+            Button btn_login = (Button) rootView.findViewById(R.id.btn_accueil_connexion);
+            Button btn_order = (Button) rootView.findViewById(R.id.btn_accueil_commander);
+            btn_login.setVisibility(View.GONE);
+            btn_order.setVisibility(View.VISIBLE);
         }
         else
         user.setText("bel inconnu");

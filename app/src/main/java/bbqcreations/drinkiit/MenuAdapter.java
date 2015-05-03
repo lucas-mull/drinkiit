@@ -70,7 +70,7 @@ public class MenuAdapter extends BaseAdapter {
         if (orders.size() != 0){
             for (int i = 0; i < orders.size(); i++){
                 Order cur = orders.get(i);
-                sum += (cur.getMeal().getPrice() * cur.getQty());
+                sum += (cur.getMeal().getPrice() * (double) cur.getQty());
             }
         }
         BigDecimal d = new BigDecimal(sum);
@@ -115,16 +115,11 @@ public class MenuAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         final View fView = convertView;
-        TextView name = holder.name;
-        TextView description = holder.description;
-        TextView price = holder.price;
-        name.setText(cur.getName().toUpperCase());
-        description.setText(cur.getDescription());
-        price.setText(cur.getPrice() + "€");
-        Button addBtn = holder.add;
-        Button cancelBtn = holder.cancel;
+        holder.name.setText(cur.getName().toUpperCase());
+        holder.description.setText(cur.getDescription());
+        holder.price.setText(cur.getPrice() + "€");
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
+        holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Token token = new Token(mainActivity.tokenData);
@@ -144,7 +139,7 @@ public class MenuAdapter extends BaseAdapter {
             }
         });
 
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
+        holder.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 unSelectItem(fView);

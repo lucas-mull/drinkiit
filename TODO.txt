@@ -1,6 +1,13 @@
-Connexion - Récupération du TOKEN
-Récupération des informations de l'utilisateur
-Vérifier la validité du token
-Passer une commande
-Récupérer les commandes en cours
-Récupérer / Voir le menu
+Connexion - Récupération du TOKEN - DONE
+Récupération des informations de l'utilisateur - DONE
+Vérifier la validité du token - DONE
+Passer une commande - DONE
+Récupérer les commandes en cours - DONE
+Récupérer / Voir le menu - DONE
+
+Page d'accueil
+Design général
+Design menu coulissant
+Trouver une solution pour ne pas faire lagger le menu coulissant
+Régler le problème d'affichage des commandes en cours (problème d'alignement)
+Faire des tests sur d'autres téléphones

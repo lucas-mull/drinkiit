@@ -42,7 +42,8 @@
             android:text="X"
             android:id="@+id/btn_preorder_remove"
             android:layout_margin="5sp"
-            android:onClick="removeOrder" />
+            android:onClick="removeOrder"
+            android:layout_gravity="right" />
 
     </LinearLayout>
 </FrameLayout>

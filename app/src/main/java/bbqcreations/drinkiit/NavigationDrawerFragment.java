@@ -100,8 +100,8 @@ public class NavigationDrawerFragment extends Fragment {
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
+                R.layout.drawer_item,
+                R.id.txt_drawer_section,
                 new String[]{
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
@@ -115,8 +115,8 @@ public class NavigationDrawerFragment extends Fragment {
     public void restoreDrawerLayout(){
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
+                R.layout.drawer_item,
+                R.id.txt_drawer_section,
                 new String[]{
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
@@ -129,8 +129,8 @@ public class NavigationDrawerFragment extends Fragment {
     public void changeDrawerLayout(){
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
+                R.layout.drawer_item,
+                R.id.txt_drawer_section,
                 new String[]{
                         getString(R.string.title_section1),
                         getString(R.string.title_section4),

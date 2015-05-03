@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -18,14 +21,15 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class UserOrdersFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    // TODO: Rename and change types of parameters
     private int sectionNumber;
+    private ArrayList<PendingOrder> orders;
 
     private OnFragmentInteractionListener mListener;
+    private ListView lv_orders;
 
     /**
      * Use this factory method to create a new instance of
@@ -34,7 +38,6 @@ public class UserOrdersFragment extends Fragment {
      * @param section_number Parameter 1.
      * @return A new instance of fragment UserOrdersFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static UserOrdersFragment newInstance(int section_number) {
         UserOrdersFragment fragment = new UserOrdersFragment();
         Bundle args = new Bundle();
@@ -53,13 +56,17 @@ public class UserOrdersFragment extends Fragment {
         if (getArguments() != null) {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+        orders = PendingOrder.getPendingOrdersList(mainActivity.currentOrdersData);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_orders, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_user_orders, container, false);
+        lv_orders = (ListView) rootView.findViewById(R.id.lv_pending);
+        lv_orders.setAdapter(new PendingOrderAdapter(orders, getActivity()));
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
