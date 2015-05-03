@@ -29,7 +29,8 @@
                 android:layout_weight="2"
                 android:gravity="center|top"
                 android:layout_gravity="center"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -90,8 +90,7 @@ public class MenuAdapter extends BaseAdapter {
         UserInfo ui = new UserInfo(mainActivity.userInfoData);
         double sum = getCurrentTotal();
         sum += (order.getMeal().getPrice() * order.getQty());
-//        if (ui.getCredit() >= sum)
-        if (30 >= sum)
+        if (ui.getCredit() >= sum)
             return true;
         else
             return false;
@@ -134,6 +133,7 @@ public class MenuAdapter extends BaseAdapter {
                 else
                     Toast.makeText(context, "Pas assez d'argent !", Toast.LENGTH_SHORT).show();
 
+                resetCommentAndQty(fView);
                 unSelectItem(fView);
 
             }
@@ -194,7 +194,15 @@ public class MenuAdapter extends BaseAdapter {
         return Integer.parseInt(qty.getText().toString());
     }
 
+    private void resetCommentAndQty(View item){
+        TextView comment = (TextView)item.findViewById(R.id.edtxt_order_comment);
+        TextView qty = (TextView)item.findViewById(R.id.txt_order_qty);
+        comment.setText(null);
+        qty.setText("1");
+    }
+
     public void unSelectItem(View v){
+
         LinearLayout base_ll = (LinearLayout)v.findViewById(R.id.ll_product);
         LinearLayout ll_clicked = (LinearLayout)v.findViewById(R.id.ll_product_clicked);
         ll_clicked.setVisibility(View.GONE);
@@ -212,12 +220,4 @@ public class MenuAdapter extends BaseAdapter {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
     }
 
-    public void hideKeyboard(){
-        Activity a = (mainActivity) context;
-        View v = a.getCurrentFocus();
-        if (v != null){
-            InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
-    }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -270,14 +272,14 @@ public class mainActivity extends ActionBarActivity
                 this.backCount = 0;
             }
             else if (this.backCount == 0){
-                Toast.makeText(this, "Rappuyez pour quitter (toute commande non validée sera perdue)", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Rappuyez pour quitter (toute commande non validée sera perdue)", Toast.LENGTH_SHORT).show();
                 this.backCount = 1;
             }
             else
                 super.onBackPressed();
         }
         else if (this.backCount == 0){
-            Toast.makeText(this, "Rappuyez pour quitter", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rappuyez pour quitter (vous serez déconnectés)", Toast.LENGTH_SHORT).show();
             this.backCount = 1;
         }
         else
@@ -341,10 +343,18 @@ public class mainActivity extends ActionBarActivity
          */
         EditText form_email = (EditText)(findViewById(R.id.txt_email));
         EditText form_passwd = (EditText)(findViewById(R.id.txt_passwd));
-        String email = form_email.getText().toString();
-        String passwd = form_passwd.getText().toString();
+        final String email = form_email.getText().toString();
+        final String passwd = form_passwd.getText().toString();
+        if (email.equals("") || passwd.equals("")){
+            Toast.makeText(this, "Vous n'avez pas rempli tous les champs !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // On les met dans un tableau à passer en paramètre de l'AsyncTask.
         String args[] = new String[]{email, passwd};
+        // Récupération de la valeur de la checkbox (si l'utilisateur veut save son mdp)
+        CheckBox cb_passwd = (CheckBox)findViewById(R.id.cb_remember_passwd);
+        final boolean isChecked = cb_passwd.isChecked();
 
         new AsyncTask<String, Void, Void>(){
 
@@ -378,6 +388,13 @@ public class mainActivity extends ActionBarActivity
                     response.getUserOrders();
                     isTokenValid = true;
                     isConnected = true;
+                    SharedPreferences preferences = ((mainActivity)current_context).getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("email", email);
+                    if (isChecked)
+                        editor.putString("passwd", passwd);
+                    editor.commit();
+
                 }
                 // Sinon la connexion a échoué, on ne change rien
 
@@ -498,11 +515,11 @@ public class mainActivity extends ActionBarActivity
     public void removeOrder(View v){
         Button caller = (Button)v;
         int position = (int)v.getTag();
-        double priceToSubtract = commandes.get(position).getMeal().getPrice() * (double) commandes.get(position).getQty();
+        double priceToSubtract = commandes.get(position).getMeal().getPrice() * commandes.get(position).getQty();
         TextView total = (TextView)findViewById(R.id.txt_order_total);
         double updatedPrice = ((double)total.getTag()) - priceToSubtract;
-       /* BigDecimal inter = new BigDecimal(updatedPrice);
-        updatedPrice = inter.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();*/
+        BigDecimal inter = new BigDecimal(updatedPrice);
+        updatedPrice = inter.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         total.setTag(updatedPrice);
         total.setText(updatedPrice + "€");
         commandes.remove(position);

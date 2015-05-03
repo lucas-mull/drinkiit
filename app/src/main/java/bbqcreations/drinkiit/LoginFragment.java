@@ -1,7 +1,9 @@
 package bbqcreations.drinkiit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -76,7 +78,31 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_login, container, false);
+
+        final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String savedEmail = preferences.getString("email", null);
+//        Log.v("savedEmail", savedEmail);
+        if (savedEmail != null){
+            EditText form_email = (EditText)(rootView.findViewById(R.id.txt_email));
+            form_email.setText(savedEmail);
+            final EditText form_passwd = (EditText)(rootView.findViewById(R.id.txt_passwd));
+            String passwd = preferences.getString("passwd", null);
+            if (passwd != null)
+                form_passwd.setText(passwd);
+            form_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus){
+                        form_passwd.setText(null);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("passwd", null);
+                        editor.commit();
+                    }
+                }
+            });
+        }
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

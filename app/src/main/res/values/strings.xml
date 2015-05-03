@@ -17,6 +17,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Valider</string>
     <string name="cancel">Annuler</string>
+    <string name="add">Ajouter</string>
     <string name="comment">commentaire...</string>
     <string name="remember_me">Mémoriser mon mot de passe</string>
     <string name="title_login">CONNEXION</string>

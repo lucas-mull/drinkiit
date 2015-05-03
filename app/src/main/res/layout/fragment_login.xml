@@ -38,7 +38,7 @@
                 android:ems="10"
                 android:id="@+id/txt_email"
                 android:layout_gravity="center"
-                android:text="jonathan@hurter.fr" />
+                android:hint="email" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                 android:id="@+id/txt_passwd"
                 android:layout_gravity="center"
                 android:layout_marginTop="50sp"
-                android:text="5HEBTvzX" />
+                android:hint="mot de passe" />
 
             <CheckBox
                 android:layout_width="wrap_content"
