@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" android:choiceMode="singleChoice"
-    android:divider="@drawable/border_bottom" android:dividerHeight="0dp"
+    android:divider="@drawable/border_bottom" android:dividerHeight="2dp"
     android:background="#d9c95743" tools:context=".NavigationDrawerFragment"
     android:layout_gravity="start"
     android:id="@+id/drawer_list" />
