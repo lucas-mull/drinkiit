@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import org.apache.http.HttpResponse;
@@ -88,8 +89,11 @@ public class LoginFragment extends Fragment {
             form_email.setText(savedEmail);
             final EditText form_passwd = (EditText)(rootView.findViewById(R.id.txt_passwd));
             String passwd = preferences.getString(getString(R.string.field_password), null);
-            if (passwd != null)
+            if (passwd != null){
+                final CheckBox cb_remember_me = (CheckBox)rootView.findViewById(R.id.cb_remember_passwd);
+                cb_remember_me.setChecked(true);
                 form_passwd.setText(passwd);
+            }
             form_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {

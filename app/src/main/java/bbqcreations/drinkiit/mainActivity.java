@@ -545,7 +545,7 @@ public class mainActivity extends ActionBarActivity
         updatedPrice = inter.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         total.setTag(updatedPrice);
         total.setText(updatedPrice + "€");
-        commandes.remove(position);
+        Log.v("Commande supprimée: ", commandes.get(position).getMeal().getName());
         ListView orders = (ListView)findViewById(R.id.lv_preorder);
         orders.setAdapter(new PreOrderAdapter(this, commandes));
         Toast.makeText(this, getString(R.string.msg_order_success), Toast.LENGTH_SHORT).show();
@@ -579,14 +579,15 @@ public class mainActivity extends ActionBarActivity
                         this.cancel(true);
                     }
                     final int position = erreur;
-                    if (result)
+                    if (result){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 removeOrder(position);
                             }
                         });
-
+                        commandes.remove(erreur);
+                    }
                     else{
                         runOnUiThread(new Runnable() {
                             @Override

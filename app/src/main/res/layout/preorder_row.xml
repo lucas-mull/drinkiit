@@ -36,12 +36,12 @@
 
         <Button
             style="@style/button_delete"
-            android:layout_width="66dp"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:textSize="15sp"
             android:text="X"
             android:id="@+id/btn_preorder_remove"
-            android:layout_margin="5sp"
+            android:layout_margin="10sp"
             android:onClick="removeOrder"
             android:layout_gravity="right" />
 

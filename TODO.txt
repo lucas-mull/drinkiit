@@ -6,6 +6,7 @@ Faire des tests sur d'autres téléphones
 Enlever la rotation sur l'appli	 - DONE (temporary fix)
 Rajouter l' écran des préférences pour les commandes ?
 Design écran "mon compte"
+Fragment à propos
 
 
 KNOWN BUGS:
@@ -15,3 +16,8 @@ KNOWN BUGS:
 - Ecran login pas responsive	- DONE
 - Retourner sur commander depuis l'écran de validation ne renvoie pas au menu
 - Mémoriser le mdp ne marche pas toujours au redémarrage ? (forcer le cochage de la cb)
+
+
+EASTER EGGS
+- Insulter les gens qui commandent des sandwich / paninis la veille pour être premier -> Interdire les commandes !!!
+- Placer un onclicklistener sur un pixel qui fait un "show me ya moves"
