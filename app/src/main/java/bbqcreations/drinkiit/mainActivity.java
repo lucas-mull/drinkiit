@@ -537,15 +537,13 @@ public class mainActivity extends ActionBarActivity
         Toast.makeText(this, getString(R.string.msg_deleted_meal), Toast.LENGTH_SHORT).show();
     }
 
-    public void removeOrder(int position){
-        double priceToSubtract = commandes.get(position).getMeal().getPrice() * commandes.get(position).getQty();
+    public void removeOrderItem(int position){
+        ListView menu = (ListView)findViewById(R.id.lv_menu);
         TextView total = (TextView)findViewById(R.id.txt_order_total);
-        double updatedPrice = ((double)total.getTag()) - priceToSubtract;
-        BigDecimal inter = new BigDecimal(updatedPrice);
-        updatedPrice = inter.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-        total.setTag(updatedPrice);
-        total.setText(updatedPrice + "€");
-        Log.v("Commande supprimée: ", commandes.get(position).getMeal().getName());
+        MenuAdapter myAdapter = (MenuAdapter)menu.getAdapter();
+        double newTotal = myAdapter.getCurrentTotal();
+        total.setTag(newTotal);
+        total.setText( newTotal + "€");
         ListView orders = (ListView)findViewById(R.id.lv_preorder);
         orders.setAdapter(new PreOrderAdapter(this, commandes));
         Toast.makeText(this, getString(R.string.msg_order_success), Toast.LENGTH_SHORT).show();
@@ -580,13 +578,13 @@ public class mainActivity extends ActionBarActivity
                     }
                     final int position = erreur;
                     if (result){
+                        commandes.remove(erreur);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                removeOrder(position);
+                                removeOrderItem(position);
                             }
                         });
-                        commandes.remove(erreur);
                     }
                     else{
                         runOnUiThread(new Runnable() {

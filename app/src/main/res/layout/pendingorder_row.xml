@@ -10,39 +10,39 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_margin="5sp"
-        android:weightSum="1">
+        android:weightSum="4.5">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_date"
             android:textSize="13sp"
-            android:gravity="left"
-            android:layout_weight="0.18" />
+            android:layout_weight="1"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_name"
             android:textSize="13sp"
-            android:gravity="left"
-            android:layout_weight="0.50" />
+            android:layout_weight="1.5"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_total"
             android:textSize="13sp"
-            android:layout_weight="0.18"
-            android:gravity="left" />
+            android:layout_weight="1"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_done"
             android:textSize="13sp"
-            android:gravity="left"
-            android:layout_weight="0.18" />
+            android:gravity="center"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </FrameLayout>
