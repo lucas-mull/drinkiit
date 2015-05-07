@@ -42,7 +42,8 @@ import java.util.ArrayList;
 public class mainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, LoginFragment.OnFragmentInteractionListener,
         AccueilFragment.OnFragmentInteractionListener, OrderFragment.OnFragmentInteractionListener,
-        UserOrdersFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener {
+        UserOrdersFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener,
+        AboutFragment.OnFragmentInteractionListener {
 
     /*
     Paramètres static. Le mot clé static autorise ces variables à être utilisées depuis partout dans l'application
@@ -166,7 +167,7 @@ public class mainActivity extends ActionBarActivity
                 break;
             case 2:
                 if (!isConnected)
-                    new_fragment = PlaceholderFragment.newInstance(position + 1);
+                    new_fragment = AboutFragment.newInstance(position + 1);
                 else
                     new_fragment = UserOrdersFragment.newInstance(position + 1);
                 break;
@@ -177,7 +178,7 @@ public class mainActivity extends ActionBarActivity
                     new_fragment = AccountFragment.newInstance(position + 1, current.getValue());
                 break;
             default:
-                new_fragment = PlaceholderFragment.newInstance(position + 1);
+                new_fragment = AboutFragment.newInstance(position + 1);
                 break;
         }
         // Et on remplace le fragment actuel par le nouveau.
@@ -248,6 +249,9 @@ public class mainActivity extends ActionBarActivity
                     mTitle = getString(R.string.title_section_user_orders);
                 break;
             case 4:
+                mTitle = getString(R.string.title_section_account);
+                break;
+            case 5:
                 mTitle = getString(R.string.title_section_about);
                 break;
         }

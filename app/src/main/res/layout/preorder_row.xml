@@ -41,7 +41,6 @@
             android:textSize="15sp"
             android:text="X"
             android:id="@+id/btn_preorder_remove"
-            android:layout_margin="10sp"
             android:onClick="removeOrder"
             android:layout_gravity="right" />
 

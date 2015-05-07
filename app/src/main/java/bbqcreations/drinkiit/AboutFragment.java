@@ -1,34 +1,27 @@
 package bbqcreations.drinkiit;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AccountFragment.OnFragmentInteractionListener} interface
+ * {@link AboutFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AccountFragment#newInstance} factory method to
+ * Use the {@link AboutFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AccountFragment extends Fragment {
-
-    private UserInfo userInfo;
-
+public class AboutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ARG_TOKEN = "token";
 
     private int sectionNumber;
-    private String token;
 
     private OnFragmentInteractionListener mListener;
 
@@ -36,20 +29,18 @@ public class AccountFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param section_number number of section in drawerLayout.
-     * @param token current token.
-     * @return A new instance of fragment AccountFragment.
+     * @param section_number Parameter 1.
+     * @return A new instance of fragment AboutFragment.
      */
-    public static AccountFragment newInstance(int section_number, String token) {
-        AccountFragment fragment = new AccountFragment();
+    public static AboutFragment newInstance(int section_number) {
+        AboutFragment fragment = new AboutFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, section_number);
-        args.putString(ARG_TOKEN, token);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public AccountFragment() {
+    public AboutFragment() {
         // Required empty public constructor
     }
 
@@ -58,40 +49,17 @@ public class AccountFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-            token = getArguments().getString(ARG_TOKEN);
         }
-        this.userInfo = new UserInfo(mainActivity.userInfoData);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_account, container, false);
-        TextView name = (TextView)rootView.findViewById(R.id.txt_account_name);
-        TextView email = (TextView)rootView.findViewById(R.id.txt_account_email);
-        TextView solde = (TextView)rootView.findViewById(R.id.txt_account_solde);
-        TextView statut = (TextView)rootView.findViewById(R.id.txt_account_activated);
-        name.setText(userInfo.getName() + " " + userInfo.getSurname());
-        email.setText(userInfo.getEmail());
-        solde.setText("" + userInfo.getCredit() + "€");
-        if (userInfo.isActivated()){
-            statut.setTextColor(Color.parseColor("#27ae60"));
-            statut.setText("Activé");
-        }
-
-        else{
-            statut.setTextColor(Color.parseColor("#c0392b"));
-            statut.setText("En attente d'activation");
-        }
-        if (userInfo.getCredit() <= 0)
-            solde.setTextColor(Color.parseColor("#c0392b"));
-        else
-            solde.setTextColor(Color.parseColor("#27ae60"));
-
-        return rootView;
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

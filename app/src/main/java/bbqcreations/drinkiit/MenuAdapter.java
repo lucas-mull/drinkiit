@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,19 +148,29 @@ public class MenuAdapter extends BaseAdapter {
         });
 
         final TextView comment = holder.comment;
+        final SharedPreferences preferences = ((mainActivity)context).getPreferences(Context.MODE_PRIVATE);
+        String commentaire = preferences.getString(cur.getName(), null);
+        if (commentaire != null)
+            comment.setText(commentaire);
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder message = new AlertDialog.Builder(context);
                 message.setTitle("Saisissez le commentaire");
                 final EditText input = new EditText(context);
+
                 message.setView(input);
-                message.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                message.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String value = input.getText().toString();
                         comment.setText(value);
                         // hide keyboard
                         Activity a = (mainActivity) context;
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(cur.getName(), value);
+                        editor.commit();
+
+                        // fermeture du clavier
                         InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputManager.hideSoftInputFromWindow(input.getWindowToken(), 0);
                     }

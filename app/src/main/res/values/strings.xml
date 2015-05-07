@@ -4,7 +4,7 @@
     <string name="app_name">Drinkiit</string>
     <string name="title_section_accueil">Accueil</string>
     <string name="title_section_login">Connexion</string>
-    <string name="title_section_about">About</string>
+    <string name="title_section_about">A propos</string>
     <string name="title_section_order">Commander</string>
     <string name="title_section_user_orders">Mes commandes</string>
     <string name="title_section_account">Mon compte</string>
