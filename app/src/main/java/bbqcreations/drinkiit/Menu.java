@@ -33,4 +33,12 @@ public class Menu {
     public int getLength(){
         return menu.length;
     }
+
+    public String[] toArray(){
+        String array[] = new String[menu.length];
+        for (int i = 0; i < menu.length; i++){
+            array[i] = menu[i].getName();
+        }
+        return array;
+    }
 }

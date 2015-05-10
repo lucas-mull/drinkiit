@@ -1,12 +1,15 @@
 package bbqcreations.drinkiit;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +24,7 @@ public class PreOrderAdapter extends BaseAdapter {
         Button delete;
     }
 
-    ArrayList<Order> data = new ArrayList<Order>();
+    ArrayList<Order> data = new ArrayList<>();
     Context context;
     private static LayoutInflater inflater = null;
 
@@ -29,6 +32,19 @@ public class PreOrderAdapter extends BaseAdapter {
         this.data = data;
         this.context = context;
         inflater = LayoutInflater.from(context);
+    }
+
+    public double getCurrentTotal(){
+        double sum = 0;
+        if (data.size() != 0){
+            for (int i = 0; i < data.size(); i++){
+                Order cur = data.get(i);
+                sum += (cur.getMeal().getPrice() * (double) cur.getQty());
+            }
+        }
+        BigDecimal d = new BigDecimal(sum);
+        sum = d.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return sum;
     }
 
     @Override

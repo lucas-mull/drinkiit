@@ -38,7 +38,7 @@ public class MenuAdapter extends BaseAdapter {
     Context context;
     Menu data;
 
-    private ArrayList<Order> orders = new ArrayList<Order>();
+    private ArrayList<Order> orders = new ArrayList<>();
     private static LayoutInflater inflater = null;
 
     public MenuAdapter(Context context, Menu data){
@@ -176,7 +176,7 @@ public class MenuAdapter extends BaseAdapter {
                     }
                 });
 
-                message.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                message.setNegativeButton("ANNULER", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Activity a = (mainActivity) context;
                         InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);

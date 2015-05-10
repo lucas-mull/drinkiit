@@ -8,12 +8,14 @@
     <string name="title_section_order">Commander</string>
     <string name="title_section_user_orders">Mes commandes</string>
     <string name="title_section_account">Mon compte</string>
+    <string name="title_section_preferences">Préférences</string>
 
     <!--Divers-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
+    <string name="action_refresh">Rafraîchir</string>
     <string name="action_settings">Règlages</string>
+    <string name="action_preferences">Préférences</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--Boutons et titres de sections-->
@@ -28,6 +30,7 @@
     <string name="title_order">COMMANDER</string>
     <string name="title_my_orders">MES COMMANDES</string>
     <string name="title_my_account">MON COMPTE</string>
+    <string name="title_preferences">PREFERENCES</string>
 
     <!--Labels et hints-->
     <string name="comment">commentaire...</string>
@@ -74,6 +77,7 @@
     <string name="getMenuURL">/api/menu?token=</string>
     <string name="getUserInfoURL">/api/userInfo?token=</string>
     <string name="getUserOrdersURL">/api/orders?token=</string>
+    <string name="postDeleteOrderURL">/api/delete</string>
 
 
 </resources>

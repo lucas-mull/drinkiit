@@ -1,6 +1,7 @@
 package bbqcreations.drinkiit;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class PendingOrderAdapter extends BaseAdapter
         TextView done;
     }
 
-    ArrayList<PendingOrder> data = new ArrayList<PendingOrder>();
+    ArrayList<PendingOrder> data = new ArrayList<>();
     Context context;
     private static LayoutInflater inflater = null;
 
@@ -51,6 +52,7 @@ public class PendingOrderAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        PendingOrder cur = data.get(position);
         if (convertView == null){
             convertView = inflater.inflate(R.layout.pendingorder_row, null);
             holder = new ViewHolder();
@@ -62,12 +64,9 @@ public class PendingOrderAdapter extends BaseAdapter
         } else{
             holder = (ViewHolder) convertView.getTag();
         }
-        PendingOrder cur = data.get(position);
-        DateFormat df = new SimpleDateFormat("dd-MM");
 
-        String commande = cur.getQuantity() + "x " + cur.getName();
-        if (cur.getComment().length() != 0)
-            commande += (" (" + cur.getComment() + ")");
+        DateFormat df = new SimpleDateFormat("dd-MM");
+        String commande = cur.toString();
 
         String done;
         if (cur.isDone())
@@ -79,6 +78,10 @@ public class PendingOrderAdapter extends BaseAdapter
         holder.commande.setText(commande);
         holder.total.setText(cur.getPrice() + "€");
         holder.done.setText(done);
+        if (position % 2 == 0)
+            convertView.setBackgroundColor(Color.parseColor("#9920221F"));
+        else
+            convertView.setBackgroundColor(Color.parseColor("#99c95743"));
 
         return convertView;
     }

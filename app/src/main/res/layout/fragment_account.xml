@@ -44,7 +44,8 @@
                 android:textStyle="bold"
                 android:layout_weight="1"
                 android:textSize="15sp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="#ffffffff" />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -53,7 +54,8 @@
                 android:layout_weight="1"
                 android:textSize="15sp"
                 android:gravity="center|top"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                android:textColor="#ffffffff" />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -63,7 +65,8 @@
                 android:textStyle="bold"
                 android:layout_weight="1"
                 android:textSize="15sp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="#ffffffff" />
 
 
             <TextView
@@ -73,7 +76,8 @@
                 android:layout_weight="1"
                 android:textSize="15sp"
                 android:textStyle="italic"
-                android:gravity="center|top" />
+                android:gravity="center|top"
+                android:textColor="#ffffffff" />
 
 
             <TextView
@@ -84,7 +88,8 @@
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="#ffffffff" />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -104,7 +109,8 @@
                 android:textStyle="bold"
                 android:layout_weight="1"
                 android:textSize="15sp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="#ffffffff" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -133,5 +139,7 @@
             android:layout_gravity="center"
             style="@style/button"
             android:onClick="logOut" />
+
     </FrameLayout>
+
 </LinearLayout>

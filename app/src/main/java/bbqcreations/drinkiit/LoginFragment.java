@@ -94,15 +94,16 @@ public class LoginFragment extends Fragment {
                 cb_remember_me.setChecked(true);
                 form_passwd.setText(passwd);
             }
-            form_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            form_passwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    if (!hasFocus){
+                    if (hasFocus){
                         form_passwd.setText(null);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString(getString(R.string.field_password), null);
                         editor.commit();
                     }
+
                 }
             });
         }

@@ -25,10 +25,8 @@ public class AccountFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ARG_TOKEN = "token";
 
     private int sectionNumber;
-    private String token;
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,14 +35,12 @@ public class AccountFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param section_number number of section in drawerLayout.
-     * @param token current token.
      * @return A new instance of fragment AccountFragment.
      */
-    public static AccountFragment newInstance(int section_number, String token) {
+    public static AccountFragment newInstance(int section_number) {
         AccountFragment fragment = new AccountFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, section_number);
-        args.putString(ARG_TOKEN, token);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +54,6 @@ public class AccountFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-            token = getArguments().getString(ARG_TOKEN);
         }
         this.userInfo = new UserInfo(mainActivity.userInfoData);
     }

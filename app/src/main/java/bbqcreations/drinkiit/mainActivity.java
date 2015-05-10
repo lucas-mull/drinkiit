@@ -1,6 +1,5 @@
 package bbqcreations.drinkiit;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,13 +11,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -26,12 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.prefs.PreferencesFactory;
 
 /**
  * La seule activité de l'application. C'est elle qui se lance au démarrage de l'application. Tous les changements d'écran se font ensuite
@@ -43,7 +39,7 @@ public class mainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, LoginFragment.OnFragmentInteractionListener,
         AccueilFragment.OnFragmentInteractionListener, OrderFragment.OnFragmentInteractionListener,
         UserOrdersFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener {
+        AboutFragment.OnFragmentInteractionListener, PreferencesFragment.OnFragmentInteractionListener {
 
     /*
     Paramètres static. Le mot clé static autorise ces variables à être utilisées depuis partout dans l'application
@@ -55,7 +51,7 @@ public class mainActivity extends ActionBarActivity
     public static JSONObject currentOrdersData; // JSON contenant les commandes récentes passées (validées) par l'utilisateur
     public static boolean isTokenValid = false; // true si le token courant est valide, false sinon
     public static boolean isConnected = false;  //true si l'utilisateur est connecté, false sinon.
-    public static ArrayList<Order> commandes = new ArrayList<Order>(); // Liste contenant la commande actuelle.
+    public static ArrayList<Order> commandes = new ArrayList<>(); // Liste contenant la commande actuelle.
 
     private int backCount = 0;  // Compteur représentant le nombre de fois où l'utilisateur a appuyé sur la touche "back" du téléphone d'affilée
     private int currentPosition = 0; // Position du fragment actif dans l'activité
@@ -69,6 +65,9 @@ public class mainActivity extends ActionBarActivity
      * Utilisé pour stocker le titre du dernier écran. Est utilisé dans {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private MenuItem pb_actionbar;
+    private MenuItem btn_refresh;
 
     /**
      * Appelé à la création de l'activité
@@ -84,18 +83,9 @@ public class mainActivity extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        final Context context = this;
 
         if (isConnected){
-            new AsyncTask<Void, Void, Void>(){
-
-                @Override
-                protected Void doInBackground(Void... params) {
-                    Token current = new Token(tokenData, context);
-                    isTokenValid = current.isValid();
-                    return null;
-                }
-            }.execute();
+            new RefreshInfo().execute(false);
         }
 
         // Set up the drawer.
@@ -118,38 +108,26 @@ public class mainActivity extends ActionBarActivity
                 return;
         }
         // On créée le fragment qui va être insérer dans la fenêtre
-        Fragment new_fragment;
-        // On crée un token (pour rappel un token permet de se connecter via le site drinkiit)
-        Token current = null;
+        Fragment new_fragment = getFragmentFromPosition(position);
         /* Si on est déjà connecté
         on va lancer un processus en arrière plan (AsyncTask dans android pour tâche asynchrone) qui va faire une requête http sur le site drinkiit
-        pour savoir si le token utilisé préalablement pour la connexion est toujours valable (expire au bout de 5 min).
-         */
-        if (isConnected){
-            try {
-                current = new Token(tokenData.getString("data"), this);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            final Token inter = current;
-                new AsyncTask<Void, Void, Void>(){
+        pour savoir si le token utilisé préalablement pour la connexion est toujours valable (expire au bout de 5 min).*/
+        if (isConnected)
+            new RefreshInfo().execute(false);
+        // Et on remplace le fragment actuel par le nouveau.
+        this.replaceFragment(new_fragment, position);
 
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        isTokenValid = inter.isValid();
-                        return null;
-                    }
-                }.execute();
-            }
+    }
 
-        /*
+    private Fragment getFragmentFromPosition(int position){
+        Fragment new_fragment;
+         /*
         On assigne le fragment en fonction de la position, càd:
         0 -> fragment "accueil" dans tous les cas
         1 -> fragment "login" si on est pas encore connecté, fragment "commander" sinon.
-        2 -> fragment "A propos" si on est pas connecté (pas encore codé), fragment "Mes commandes" sinon
+        2 -> fragment "A propos" si on est pas connecté, fragment "Mes commandes" sinon
         3 -> fragment "Mon compte" dans tous les cas (la session non connecté possède seulement 3 items, donc position s'arrête à 2).
-        4 -> defaut : fragment "A propos" (pas encore codé)
-        On vérifie pour chaque section si le token a expiré. Dans ce cas, on redirige vers l'accueil.
+        4 -> defaut : fragment "A propos"
          */
         switch (position){
             case 0:
@@ -158,12 +136,8 @@ public class mainActivity extends ActionBarActivity
             case 1:
                 if (!isConnected)
                     new_fragment = LoginFragment.newInstance(position + 1);
-                else{
-                    if (!isTokenValid)
-                        new_fragment = this.connexionExpiredFragment();
-                    else
-                        new_fragment = OrderFragment.newInstance(position + 1, current.getValue());
-                }
+                else
+                    new_fragment = OrderFragment.newInstance(position + 1);
                 break;
             case 2:
                 if (!isConnected)
@@ -172,18 +146,13 @@ public class mainActivity extends ActionBarActivity
                     new_fragment = UserOrdersFragment.newInstance(position + 1);
                 break;
             case 3:
-                if (!isTokenValid)
-                    new_fragment = this.connexionExpiredFragment();
-                else
-                    new_fragment = AccountFragment.newInstance(position + 1, current.getValue());
+                new_fragment = AccountFragment.newInstance(position + 1);
                 break;
             default:
                 new_fragment = AboutFragment.newInstance(position + 1);
                 break;
         }
-        // Et on remplace le fragment actuel par le nouveau.
-        this.replaceFragment(new_fragment, position);
-
+        return new_fragment;
     }
 
 
@@ -198,7 +167,9 @@ public class mainActivity extends ActionBarActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, new_fragment)
                 .commit();
+        onSectionAttached(position);
         currentPosition = position;
+        restoreActionBar();
     }
 
     /**
@@ -206,12 +177,12 @@ public class mainActivity extends ActionBarActivity
      * de l'expiration, reset les paramètres static, et renvoie une instance du fragment accueil.
      * @return Une instance de AccueilFragment
      */
-    private Fragment connexionExpiredFragment(){
+    private void connexionExpiredFragment(){
         Fragment new_fragment = AccueilFragment.newInstance(1);
         mNavigationDrawerFragment.notConnectedDrawerLayout();
         Toast.makeText(this, getString(R.string.msg_connexion_expired), Toast.LENGTH_SHORT).show();
         resetAllStaticInfo();
-        return new_fragment;
+        replaceFragment(new_fragment, 0);
     }
 
     /**
@@ -224,7 +195,7 @@ public class mainActivity extends ActionBarActivity
         backCount = 0;
         isConnected = false;
         isTokenValid = false;
-        commandes = new ArrayList<Order>();
+        commandes = new ArrayList<>();
     }
 
     /**
@@ -253,6 +224,9 @@ public class mainActivity extends ActionBarActivity
                 break;
             case 5:
                 mTitle = getString(R.string.title_section_about);
+                break;
+            case 6:
+                mTitle = getString(R.string.title_section_preferences);
                 break;
         }
     }
@@ -290,6 +264,9 @@ public class mainActivity extends ActionBarActivity
             else
                 super.onBackPressed();
         }
+        else if (position == 5)
+            replaceFragment(OrderFragment.newInstance(2), 1);
+
         else if (this.backCount == 0){
             Toast.makeText(this, getString(R.string.msg_back), Toast.LENGTH_SHORT).show();
             this.backCount = 1;
@@ -309,7 +286,14 @@ public class mainActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
+            if (isConnected && (currentPosition == 2 || currentPosition == 3)){
+                getMenuInflater().inflate(R.menu.main, menu);
+                pb_actionbar = menu.findItem(R.id.menu_progress);
+                btn_refresh = menu.findItem(R.id.action_refresh);
+            }
+            else if (isConnected && currentPosition == 1){
+                getMenuInflater().inflate(R.menu.orders, menu);
+            }
             restoreActionBar();
             return true;
         }
@@ -329,8 +313,15 @@ public class mainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            pb_actionbar.setVisible(true);
+            btn_refresh.setVisible(false);
+            new RefreshInfo().execute(true);
             return true;
+        }
+        else if (id == R.id.action_preferences){
+            Fragment prefFragment = PreferencesFragment.newInstance();
+            replaceFragment(prefFragment, 5);
         }
 
         return super.onOptionsItemSelected(item);
@@ -426,7 +417,7 @@ public class mainActivity extends ActionBarActivity
                         resetLoginFragment();
                     }
                 });
-                showConnexionErrorDialog();
+                showConnexionErrorDialog(current_context);
             }
 
             /**
@@ -441,10 +432,8 @@ public class mainActivity extends ActionBarActivity
                 super.onPostExecute(result);
                 if (isConnected){
                     Toast.makeText(current_context, getString(R.string.msg_login_success), Toast.LENGTH_SHORT).show();
-                    replaceFragment(AccueilFragment.newInstance(1), 0);
                     mNavigationDrawerFragment.connectedDrawerLayout();
-                    mTitle = getString(R.string.title_section_accueil);
-                    restoreActionBar();
+                    replaceFragment(AccueilFragment.newInstance(1), 0);
                 }
                 else{
                     runOnUiThread(new Runnable() {
@@ -462,17 +451,17 @@ public class mainActivity extends ActionBarActivity
         Button caller = (Button)v;
         if (caller.getId() == R.id.btn_accueil_connexion)
             this.replaceFragment(LoginFragment.newInstance(2), 1);
-        else{
-            Token token = new Token(tokenData, this);
-            this.replaceFragment(OrderFragment.newInstance(2, token.getValue()), 1);
-        }
+        else
+            this.replaceFragment(OrderFragment.newInstance(2), 1);
+        if (caller.getId() == R.id.btn_submit_preferences)
+            Toast.makeText(this, "Préférences sauvegardées !", Toast.LENGTH_SHORT).show();
     }
 
-    public void showConnexionErrorDialog(){
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_no_connexion))
-                .setMessage(getString(R.string.msg_no_connexion))
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+    public static void showConnexionErrorDialog(Context c){
+        new AlertDialog.Builder(c)
+                .setTitle(c.getString(R.string.title_no_connexion))
+                .setMessage(c.getString(R.string.msg_no_connexion))
+                .setPositiveButton(c.getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // événement nul, le clic sur le bouton ne fait que dismiss la boite de dialogue (ce qui nous suffit)
@@ -525,31 +514,25 @@ public class mainActivity extends ActionBarActivity
         menu.setVisibility(View.VISIBLE);
     }
 
-    public void removeOrder(View v){
-        Button caller = (Button)v;
-        int position = (int)v.getTag();
-        double priceToSubtract = commandes.get(position).getMeal().getPrice() * commandes.get(position).getQty();
-        TextView total = (TextView)findViewById(R.id.txt_order_total);
-        double updatedPrice = ((double)total.getTag()) - priceToSubtract;
-        BigDecimal inter = new BigDecimal(updatedPrice);
-        updatedPrice = inter.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-        total.setTag(updatedPrice);
-        total.setText(updatedPrice + "€");
-        commandes.remove(position);
+    public void refreshPreOrders(){
         ListView orders = (ListView)findViewById(R.id.lv_preorder);
-        orders.setAdapter(new PreOrderAdapter(this, commandes));
-        Toast.makeText(this, getString(R.string.msg_deleted_meal), Toast.LENGTH_SHORT).show();
-    }
-
-    public void removeOrderItem(int position){
-        ListView menu = (ListView)findViewById(R.id.lv_menu);
         TextView total = (TextView)findViewById(R.id.txt_order_total);
-        MenuAdapter myAdapter = (MenuAdapter)menu.getAdapter();
+        PreOrderAdapter myAdapter = (PreOrderAdapter)orders.getAdapter();
         double newTotal = myAdapter.getCurrentTotal();
         total.setTag(newTotal);
         total.setText( newTotal + "€");
-        ListView orders = (ListView)findViewById(R.id.lv_preorder);
         orders.setAdapter(new PreOrderAdapter(this, commandes));
+    }
+
+    public void removeOrder(View v){
+        int position = (int)v.getTag();
+        commandes.remove(position);
+        refreshPreOrders();
+        Toast.makeText(this, getString(R.string.msg_deleted_meal), Toast.LENGTH_SHORT).show();
+    }
+
+    public void removeOrderItem(){
+        refreshPreOrders();
         Toast.makeText(this, getString(R.string.msg_order_success), Toast.LENGTH_SHORT).show();
     }
 
@@ -586,7 +569,7 @@ public class mainActivity extends ActionBarActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                removeOrderItem(position);
+                                removeOrderItem();
                             }
                         });
                     }
@@ -614,7 +597,7 @@ public class mainActivity extends ActionBarActivity
                         hideOrdersLoading();
                     }
                 });
-                showConnexionErrorDialog();
+                showConnexionErrorDialog(context);
             }
 
             @Override
@@ -671,44 +654,40 @@ public class mainActivity extends ActionBarActivity
         frame_load.setVisibility(View.VISIBLE);
     }
 
+    public class RefreshInfo extends AsyncTask<Boolean, Void, Boolean>{
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-
-        public PlaceholderFragment() {
+        @Override
+        protected Boolean doInBackground(Boolean... params) {
+            final boolean replaceFragment = params[0];
+            Token inter = new Token(mainActivity.tokenData, getApplicationContext());
+            mainActivity.isTokenValid = inter.isValid();
+            if (!isTokenValid){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connexionExpiredFragment();
+                    }
+                });
+            }
+            else if (replaceFragment){
+                inter.getUserInfo();
+                inter.getUserOrders();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        replaceFragment(getFragmentFromPosition(currentPosition), currentPosition);
+                    }
+                });
+            }
+            return replaceFragment;
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_main, container, false);
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((mainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
+        protected void onPostExecute(Boolean result){
+            if (result){
+                pb_actionbar.setVisible(false);
+                btn_refresh.setVisible(true);
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package bbqcreations.drinkiit;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -18,6 +19,7 @@ import java.util.Date;
  */
 public class PendingOrder {
 
+    int id;
     Calendar date;
     String name;
     double price;
@@ -28,6 +30,7 @@ public class PendingOrder {
 
     public PendingOrder(JSONObject data){
         try {
+            this.id = data.getInt("id");
             this.date = this.parseString(data.getString("date"));
             this.total = data.getInt("total");
             this.done = data.getBoolean("done");
@@ -44,11 +47,11 @@ public class PendingOrder {
     }
 
     public Calendar parseString(String s){
-        int year = Integer.parseInt(s.substring(0, 3));
-        int month = Integer.parseInt(s.substring(5, 6));
-        int day = Integer.parseInt(s.substring(8, 9));
-        int hours = Integer.parseInt(s.substring(11, 12));
-        int minutes = Integer.parseInt(s.substring(14, 15));
+        int year = Integer.parseInt(s.substring(0, 4));
+        int month = Integer.parseInt(s.substring(5, 7));
+        int day = Integer.parseInt(s.substring(8, 10));
+        int hours = Integer.parseInt(s.substring(11, 13));
+        int minutes = Integer.parseInt(s.substring(14, 16));
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, day, hours, minutes);
         return cal;
@@ -122,5 +125,16 @@ public class PendingOrder {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String toString(){
+        String commande = this.getQuantity() + "x " + this.getName();
+        if (this.getComment().length() != 0)
+            commande += (" (" + this.getComment() + ")");
+        return commande;
     }
 }

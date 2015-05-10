@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="5sp"
+        android:orientation="vertical"
+        android:background="@drawable/full_border">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/txt_product_name"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="#ffc5d2d6"
+            android:textColor="#ff69210e"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/lbl_product_preference"
+            android:text="Préférence: "
+            android:gravity="center"
+            android:background="#ffc95743"
+            android:textColor="#ffffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/txt_product_comment"
+            android:gravity="center"
+            android:hint="Aucune préférence"
+            android:background="#ffffffff"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</FrameLayout>

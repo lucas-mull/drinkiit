@@ -35,10 +35,8 @@ public class OrderFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ARG_TOKEN = "token";
 
     private int sectionNumber;
-    private String token;
 
 
     private OnFragmentInteractionListener mListener;
@@ -51,14 +49,12 @@ public class OrderFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param section_number number of section in navigation drawer
-     * @param token value of the current user's token
      * @return A new instance of fragment OrderFragment.
      */
-    public static OrderFragment newInstance(int section_number, String token) {
+    public static OrderFragment newInstance(int section_number) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, section_number);
-        args.putString(ARG_TOKEN, token);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,7 +68,6 @@ public class OrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-            token = getArguments().getString(ARG_TOKEN);
         }
         this.userInfo = new UserInfo(mainActivity.userInfoData);
         this.menu = new Menu(mainActivity.menuData);
@@ -115,15 +110,6 @@ public class OrderFragment extends Fragment {
         LinearLayout ll_clicked = (LinearLayout)v.findViewById(R.id.ll_product_clicked);
         ll_clicked.setVisibility(View.GONE);
         base_ll.setVisibility(View.VISIBLE);
-    }
-
-    public void hideKeyboard(){
-        Activity a = getActivity();
-        View v = a.getCurrentFocus();
-        if (v != null){
-            InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

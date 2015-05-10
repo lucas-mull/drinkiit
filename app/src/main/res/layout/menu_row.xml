@@ -10,8 +10,7 @@
         android:weightSum="5"
         android:layout_margin="5sp"
         android:background="@drawable/full_border"
-        android:id="@+id/ll_product"
-        android:visibility="visible">
+        android:id="@+id/ll_product">
 
 
         <TextView

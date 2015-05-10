@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_margin="5sp"
-        android:weightSum="4.5">
+        android:weightSum="4">
 
         <TextView
             android:layout_width="wrap_content"
@@ -18,15 +18,17 @@
             android:id="@+id/txt_pending_date"
             android:textSize="13sp"
             android:layout_weight="1"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="#ffffffff" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_name"
             android:textSize="13sp"
-            android:layout_weight="1.5"
-            android:gravity="center" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#ffffffff" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +36,8 @@
             android:id="@+id/txt_pending_total"
             android:textSize="13sp"
             android:layout_weight="1"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="#ffffffff" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +45,8 @@
             android:id="@+id/txt_pending_done"
             android:textSize="13sp"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="#ffffffff" />
     </LinearLayout>
 
 </FrameLayout>

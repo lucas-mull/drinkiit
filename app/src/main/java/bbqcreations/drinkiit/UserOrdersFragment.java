@@ -1,14 +1,20 @@
 package bbqcreations.drinkiit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -30,6 +36,8 @@ public class UserOrdersFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private ListView lv_orders;
+    private MenuItem pb_actionbar;
+    private MenuItem btn_refresh;
 
     /**
      * Use this factory method to create a new instance of
@@ -56,6 +64,7 @@ public class UserOrdersFragment extends Fragment {
         if (getArguments() != null) {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+        setHasOptionsMenu(true);
         orders = PendingOrder.getPendingOrdersList(mainActivity.currentOrdersData);
     }
 
@@ -66,6 +75,88 @@ public class UserOrdersFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_user_orders, container, false);
         lv_orders = (ListView) rootView.findViewById(R.id.lv_pending);
         lv_orders.setAdapter(new PendingOrderAdapter(orders, getActivity()));
+        lv_orders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final AlertDialog.Builder suppression = new AlertDialog.Builder(getActivity());
+                suppression.setTitle("Supprimer " + orders.get(position).toString() + " ?");
+                suppression.setMessage("La commande ne vous sera pas délivrée");
+                suppression.setPositiveButton(getActivity().getString(R.string.ok), new Dialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final Token current = new Token(mainActivity.tokenData, getActivity());
+                        String token = current.getValue();
+                        String id = orders.get(position).getId() + "";
+                        String args[] = new String[]{token, id};
+                        new AsyncTask<String, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(String... params) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        btn_refresh.setVisible(false);
+                                        pb_actionbar.setVisible(true);
+                                    }
+                                });
+                                boolean result = false;
+                                try {
+                                    result = current.postDeleteOrderData(params);
+                                } catch (IOException e) {
+                                    this.cancel(true);
+                                    e.printStackTrace();
+                                }
+                                if (result){
+                                    orders.remove(position);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            refresh();
+                                            Toast.makeText(getActivity(), "Commande supprimée", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    current.getUserOrders();
+                                }
+                                else{
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getActivity(), "Echec de la suppression de la commande", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
+                                return null;
+                            }
+
+                            @Override
+                            protected void onCancelled(){
+                                mainActivity.showConnexionErrorDialog(getActivity());
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void result){
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        pb_actionbar.setVisible(false);
+                                        btn_refresh.setVisible(true);
+                                    }
+                                });
+                            }
+
+                        }.execute(args);
+                    }
+
+                });
+                suppression.setNegativeButton(getActivity().getString(R.string.cancel), new Dialog.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                suppression.show();
+            }
+        });
         return rootView;
     }
 
@@ -74,6 +165,13 @@ public class UserOrdersFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        pb_actionbar = menu.findItem(R.id.menu_progress);
+        btn_refresh = menu.findItem(R.id.action_refresh);
     }
 
     @Override
@@ -93,6 +191,10 @@ public class UserOrdersFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void refresh(){
+        lv_orders.setAdapter(new PendingOrderAdapter(orders, getActivity()));
     }
 
     /**

@@ -76,7 +76,7 @@ public class Token {
     public void getTokenFromRequest(Context context, String... params) throws IOException{
         this.setContext(context);
         try {
-            sendData(new apiURL("postLogformURL", context), params);
+            sendData(new ApiURL("postLogformURL", context), params);
             if (mainActivity.tokenData.getString("type").equals("success"))
                 this.setValue(this.getData().getString("data"));
             else
@@ -88,7 +88,20 @@ public class Token {
 
     public boolean postOrderData(String... params) throws IOException{
         try {
-            sendData(new apiURL("postOrderURL", this.c), params);
+            sendData(new ApiURL("postOrderURL", this.c), params);
+            if (getData().getString("type").equals("success"))
+                return true;
+            else
+                return false;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean postDeleteOrderData(String... params) throws IOException{
+        try {
+            sendData(new ApiURL("postDeleteOrderURL", this.c), params);
             if (getData().getString("type").equals("success"))
                 return true;
             else
@@ -101,7 +114,7 @@ public class Token {
 
     public JSONObject getUserOrders(){
         try {
-            sendData(new apiURL("getUserOrdersURL", this.c), getValue());
+            sendData(new ApiURL("getUserOrdersURL", this.c), getValue());
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -112,7 +125,7 @@ public class Token {
 
     public JSONObject getMenu(){
         try {
-            sendData(new apiURL("getMenuURL", this.c), getValue());
+            sendData(new ApiURL("getMenuURL", this.c), getValue());
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -124,7 +137,7 @@ public class Token {
     public boolean isValid(){
         boolean res = false;
         try {
-            sendData(new apiURL("getTokenCheckURL", this.c), getValue());
+            sendData(new ApiURL("getTokenCheckURL", this.c), getValue());
             res = data.getBoolean("value");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -136,7 +149,7 @@ public class Token {
 
     public JSONObject getUserInfo(){
         try {
-            sendData(new apiURL("getUserInfoURL", this.c), getValue());
+            sendData(new ApiURL("getUserInfoURL", this.c), getValue());
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -159,7 +172,7 @@ public class Token {
         return new DefaultHttpClient(mgr, client.getParams());
     }
 
-    private void sendData(apiURL url, String...params) throws JSONException, IOException {
+    private void sendData(ApiURL url, String...params) throws JSONException, IOException {
 
         // Create a new HttpClient and Post Header
         DefaultHttpClient httpclient = getHttpClient();
