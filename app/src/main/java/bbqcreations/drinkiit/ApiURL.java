@@ -120,7 +120,7 @@ public class ApiURL {
         else{
             nameValuePairs = new ArrayList<>(2);
             nameValuePairs.add(new BasicNameValuePair("token", params[0]));
-            nameValuePairs.add(new BasicNameValuePair("order_id", params[1]));
+            nameValuePairs.add(new BasicNameValuePair("o_id", params[1]));
         }
         return nameValuePairs;
     }

@@ -3,17 +3,16 @@ Régler le problème d'affichage des commandes en cours (problème d'alignement)
 Enlever la rotation sur l'appli	 - DONE (temporary fix)
 Rajouter l' écran des préférences pour les commandes ? - DONE
 Design écran "mon compte" - DONE
-Rajouter la possibilité de supprimer une commande depuis l'écran mes commandes
+Rajouter la possibilité de supprimer une commande depuis l'écran mes commandes - DONE ?
 Resources strings
 Ajouter les boutons sur "settings"
 
 
 KNOWN BUGS:
 
-- Infos utilisateurs non remises à jour quand on va dans "mon compte"
-- Date non correcte sur "mes commandes"
 - TextView commentaire trop petite ?
-- Retourner sur commander depuis l'écran de validation ne renvoie pas au menu
+- Titre de sections non mis à jour quand on navigue via les boutons de l'accueil. Idem pour les menus "settings"
+- Listview commander -> Elements en position n et n + 5 sont linkés.
 
 
 EASTER EGGS

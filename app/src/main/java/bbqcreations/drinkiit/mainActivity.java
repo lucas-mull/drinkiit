@@ -639,6 +639,13 @@ public class mainActivity extends ActionBarActivity
         txtQty.setText(qty + "");
     }
 
+    public void PierrickIsOn(View v){
+        LinearLayout ll_normal = (LinearLayout)findViewById(R.id.ll_about_normal);
+        LinearLayout ll_special = (LinearLayout) findViewById(R.id.ll_about_special);
+        ll_normal.setVisibility(View.GONE);
+        ll_special.setVisibility(View.VISIBLE);
+    }
+
 
     private void resetLoginFragment(){
         LinearLayout frame_log = (LinearLayout)(findViewById(R.id.ll_login));
