@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 /**
  * Created by lucas on 27/04/15.
+ *
  */
 public class UserInfo {
     private int id;
@@ -51,31 +52,16 @@ public class UserInfo {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public double getCredit() {
         return credit;
     }
 
-    public void setCredit(int credit) {
-        this.credit = credit;
-    }
-
     public boolean isActivated() {
         return activated;
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
 }

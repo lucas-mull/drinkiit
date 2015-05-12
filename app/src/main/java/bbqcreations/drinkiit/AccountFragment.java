@@ -26,9 +26,9 @@ public class AccountFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private int sectionNumber;
+    int sectionNumber;
 
-    private OnFragmentInteractionListener mListener;
+    OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -85,12 +85,6 @@ public class AccountFragment extends Fragment {
             solde.setTextColor(Color.parseColor("#27ae60"));
 
         return rootView;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

@@ -6,12 +6,20 @@ import org.json.JSONObject;
 
 /**
  * Created by lucas on 30/04/15.
+ * Correspond à un ensemble de plats -> constitue le menu Drinkiit
  */
-public class Menu {
+public class Menu_ {
 
-    Meal[] menu;
+    /*
+    Attributs
+     */
+    Meal[] menu;    // Ensemble des plats constituants le menu
 
-    public Menu(JSONObject data){
+    /**
+     * Créée un menu à partir d'un JSONObject (Typiquement envoyé par une requête http).
+     * @param data JSONObject à partir duquel créer notre menu.
+     */
+    public Menu_(JSONObject data){
         try {
             JSONArray innerData = data.getJSONArray("data");
             menu = new Meal[innerData.length()];
@@ -24,6 +32,9 @@ public class Menu {
         }
     }
 
+    /*
+    Getters & Setters
+     */
     public Meal getMeal(int position){
         if (this.menu == null)
             return null;
@@ -34,6 +45,10 @@ public class Menu {
         return menu.length;
     }
 
+    /**
+     *
+     * @return tableaux comprenant les noms de chaque plat du menu
+     */
     public String[] toArray(){
         String array[] = new String[menu.length];
         for (int i = 0; i < menu.length; i++){

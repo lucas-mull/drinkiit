@@ -1,33 +1,32 @@
 package bbqcreations.drinkiit;
 
-import android.util.Log;
-import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by lucas on 02/05/15.
+ * Correspond à une commande en cours (déjà postée sur le site)
  */
 public class PendingOrder {
+    /*
+    Attributs
+     */
+    int id; // identifiant de la commande (pour une éventuelle suppression)
+    Calendar date; // date de la commande
+    String name; // nom du plat
+    double price; // prix du plat
+    String comment; // commentaire de la commande
+    int quantity; // quantité demandée
+    int total; // prix total de la commande (prix * quantité)
+    boolean done; // si la commande a été servie ou pas
 
-    int id;
-    Calendar date;
-    String name;
-    double price;
-    String comment;
-    int quantity;
-    int total;
-    boolean done;
-
+    /**
+     * Créée une commande à partir d'un JSONObject (typiquement renvoyé par une requête http)
+     * @param data JSONObject à partir duquel créer la commande
+     */
     public PendingOrder(JSONObject data){
         try {
             this.id = data.getInt("id");
@@ -46,6 +45,11 @@ public class PendingOrder {
         }
     }
 
+    /**
+     * Convertit la date renvoyée par le serveur en date (type Calendar)
+     * @param s chaîne à partir du quel convertir une date
+     * @return l'objet Calendar créé
+     */
     public Calendar parseString(String s){
         int year = Integer.parseInt(s.substring(0, 4));
         int month = Integer.parseInt(s.substring(5, 7));
@@ -57,8 +61,13 @@ public class PendingOrder {
         return cal;
     }
 
+    /**
+     *
+     * @param response renvoie la liste des commandes créée à partir de la réponse http
+     * @return la liste des commandes
+     */
     public static ArrayList<PendingOrder> getPendingOrdersList(JSONObject response){
-        ArrayList<PendingOrder> ordersList = new ArrayList<PendingOrder>();
+        ArrayList<PendingOrder> ordersList = new ArrayList<>();
         try {
             JSONArray list = response.getJSONArray("data");
             for (int i = 0; i < list.length(); i++){
@@ -75,10 +84,6 @@ public class PendingOrder {
         return date;
     }
 
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
     public String getName() {
         return name;
     }
@@ -91,40 +96,16 @@ public class PendingOrder {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public String getComment() {
         return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
     public boolean isDone() {
         return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
     }
 
     public int getId() {

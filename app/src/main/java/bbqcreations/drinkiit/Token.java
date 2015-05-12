@@ -24,6 +24,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by lucas on 26/04/15.
+ *
  */
 public class Token {
 
@@ -41,11 +42,6 @@ public class Token {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        this.c = context;
-    }
-
-    public Token(String token, Context context) {
-        this.value = token;
         this.c = context;
     }
 
@@ -76,7 +72,7 @@ public class Token {
     public void getTokenFromRequest(Context context, String... params) throws IOException{
         this.setContext(context);
         try {
-            sendData(new ApiURL("postLogformURL", context), params);
+            sendData(new ApiURL(ApiURL.KEY_CONNECT, context), params);
             if (mainActivity.tokenData.getString("type").equals("success"))
                 this.setValue(this.getData().getString("data"));
             else
@@ -88,11 +84,9 @@ public class Token {
 
     public boolean postOrderData(String... params) throws IOException{
         try {
-            sendData(new ApiURL("postOrderURL", this.c), params);
-            if (getData().getString("type").equals("success"))
-                return true;
-            else
-                return false;
+            sendData(new ApiURL(ApiURL.KEY_ORDER, this.c), params);
+            return (getData().getString("type").equals("success"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,11 +95,8 @@ public class Token {
 
     public boolean postDeleteOrderData(String... params) throws IOException{
         try {
-            sendData(new ApiURL("postDeleteOrderURL", this.c), params);
-            if (getData().getString("type").equals("success"))
-                return true;
-            else
-                return false;
+            sendData(new ApiURL(ApiURL.KEY_DELETEORDER, this.c), params);
+            return (getData().getString("type").equals("success"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -114,10 +105,8 @@ public class Token {
 
     public JSONObject getUserOrders(){
         try {
-            sendData(new ApiURL("getUserOrdersURL", this.c), getValue());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            sendData(new ApiURL(ApiURL.KEY_USERORDERS, this.c), getValue());
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
         return this.data;
@@ -125,10 +114,8 @@ public class Token {
 
     public JSONObject getMenu(){
         try {
-            sendData(new ApiURL("getMenuURL", this.c), getValue());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            sendData(new ApiURL(ApiURL.KEY_MENU, this.c), getValue());
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
         return this.data;
@@ -137,11 +124,9 @@ public class Token {
     public boolean isValid(){
         boolean res = false;
         try {
-            sendData(new ApiURL("getTokenCheckURL", this.c), getValue());
+            sendData(new ApiURL(ApiURL.KEY_CHECKTOKEN, this.c), getValue());
             res = data.getBoolean("value");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
         return res;
@@ -149,10 +134,8 @@ public class Token {
 
     public JSONObject getUserInfo(){
         try {
-            sendData(new ApiURL("getUserInfoURL", this.c), getValue());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            sendData(new ApiURL(ApiURL.KEY_USERINFO, this.c), getValue());
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
         return this.data;
@@ -173,13 +156,11 @@ public class Token {
     }
 
     private void sendData(ApiURL url, String...params) throws JSONException, IOException {
-
-        // Create a new HttpClient and Post Header
         DefaultHttpClient httpclient = getHttpClient();
         String json;
         HttpResponse response;
 
-        if (url.getMethod().equals("POST")){
+        if (url.getMethod().equals(ApiURL.METHOD_POST)){
             HttpPost httppost = new HttpPost(url.getURL());
             // Add your data
             httppost.setEntity(new UrlEncodedFormEntity(url.getPOSTinfo(params), "UTF-8"));
@@ -194,16 +175,16 @@ public class Token {
         Log.v("réponse du serveur: ", json);
         this.setData(new JSONObject(json));
         switch(url.getKey()){
-            case "postLogformURL":
+            case ApiURL.KEY_CONNECT:
                 mainActivity.tokenData = getData();
                 break;
-            case "getUserInfoURL":
+            case ApiURL.KEY_USERINFO:
                 mainActivity.userInfoData = getData();
                 break;
-            case "getMenuURL":
+            case ApiURL.KEY_MENU:
                 mainActivity.menuData = getData();
                 break;
-            case "getUserOrdersURL":
+            case ApiURL.KEY_USERORDERS:
                 mainActivity.currentOrdersData = getData();
                 break;
             default:

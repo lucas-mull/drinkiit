@@ -1,19 +1,18 @@
 package bbqcreations.drinkiit;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
  * Created by lucas on 01/05/15.
+ *
  */
 public class PreOrderAdapter extends BaseAdapter {
 

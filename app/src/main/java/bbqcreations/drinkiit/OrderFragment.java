@@ -1,24 +1,19 @@
 package bbqcreations.drinkiit;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONObject;
-
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -36,12 +31,11 @@ public class OrderFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private int sectionNumber;
+    int sectionNumber;
+    OnFragmentInteractionListener mListener;
 
-
-    private OnFragmentInteractionListener mListener;
-    private ListView listView;
-    private Menu menu;
+    ListView listView;
+    private Menu_ menu;
     public static View selectedItem;
 
     /**
@@ -70,7 +64,8 @@ public class OrderFragment extends Fragment {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         this.userInfo = new UserInfo(mainActivity.userInfoData);
-        this.menu = new Menu(mainActivity.menuData);
+        this.menu = new Menu_(mainActivity.menuData);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -112,13 +107,6 @@ public class OrderFragment extends Fragment {
         base_ll.setVisibility(View.VISIBLE);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -136,6 +124,11 @@ public class OrderFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**

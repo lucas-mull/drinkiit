@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -15,8 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -27,7 +26,6 @@ import android.widget.Toast;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.prefs.PreferencesFactory;
 
 /**
  * La seule activité de l'application. C'est elle qui se lance au démarrage de l'application. Tous les changements d'écran se font ensuite
@@ -73,7 +71,7 @@ public class mainActivity extends ActionBarActivity
      * Appelé à la création de l'activité
      * On met en place le menu coulissant (navigation drawer)
      * Toute cette partie est autogénérée par android studio.
-     * @param savedInstanceState
+     * @param savedInstanceState etat de l'instance
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,15 +165,12 @@ public class mainActivity extends ActionBarActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, new_fragment)
                 .commit();
-        onSectionAttached(position);
         currentPosition = position;
-        restoreActionBar();
     }
 
     /**
      * Utilisé dans le cas d'une connexion expirée. Reset le menu avec les items de base (Accueil, login, a propos), notifie l'utilisateur
      * de l'expiration, reset les paramètres static, et renvoie une instance du fragment accueil.
-     * @return Une instance de AccueilFragment
      */
     private void connexionExpiredFragment(){
         Fragment new_fragment = AccueilFragment.newInstance(1);
@@ -278,7 +273,7 @@ public class mainActivity extends ActionBarActivity
     /**
      * Autogénéré
      * @param menu liste des items du menu coulissant, rien à voir avec la classe Menu de l'appli.
-     * @return
+     * @return true si il y a un menu, false sinon
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -301,9 +296,8 @@ public class mainActivity extends ActionBarActivity
     }
 
     /**
-     * TODO
-     * @param item
-     * @return
+     * @param item item du menu sur lequel on a cliqué
+     * @return pas sûr de ce que ça retourne
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -322,14 +316,14 @@ public class mainActivity extends ActionBarActivity
         else if (id == R.id.action_preferences){
             Fragment prefFragment = PreferencesFragment.newInstance();
             replaceFragment(prefFragment, 5);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * TODO
-     * @param uri
+    /** Interface pour autoriser la communication fragment -> activité
+     * @param uri uri
      */
     public void onFragmentInteraction(Uri uri){
 
@@ -397,7 +391,7 @@ public class mainActivity extends ActionBarActivity
                     editor.putString(getString(R.string.field_email), email);
                     if (isChecked)
                         editor.putString(getString(R.string.field_password), passwd);
-                    editor.commit();
+                    editor.apply();
 
                 }
                 // Sinon la connexion a échoué, on ne change rien
@@ -484,7 +478,7 @@ public class mainActivity extends ActionBarActivity
 
     /**
      * Effectue le changement d'écran lorsque l'utilisateur appuie sur le bouton pour voir ses commandes à valider (fragment OrderFragment)
-     * @param v
+     * @param v bouton appelant la fonction onclick.
      */
     public void checkOrder(View v){
         // La liste contenant le menu est remplacée par celle contenant les commandes passées.
@@ -563,7 +557,6 @@ public class mainActivity extends ActionBarActivity
                     } catch (IOException e) {
                         this.cancel(true);
                     }
-                    final int position = erreur;
                     if (result){
                         commandes.remove(erreur);
                         runOnUiThread(new Runnable() {
@@ -644,6 +637,11 @@ public class mainActivity extends ActionBarActivity
         LinearLayout ll_special = (LinearLayout) findViewById(R.id.ll_about_special);
         ll_normal.setVisibility(View.GONE);
         ll_special.setVisibility(View.VISIBLE);
+    }
+
+    public void falcon(View v){
+        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.falcon);
+        mp.start();
     }
 
 

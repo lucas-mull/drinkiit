@@ -18,4 +18,3 @@ KNOWN BUGS:
 EASTER EGGS
 - Insulter les gens qui commandent des sandwich / paninis la veille pour être premier -> Interdire les commandes !!!
 - Placer un onclicklistener sur un pixel qui fait un "show me ya moves"
-- OnClick sur l'écran à propos.

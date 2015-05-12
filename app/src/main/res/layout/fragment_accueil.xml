@@ -43,7 +43,8 @@
                 android:gravity="center"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,7 +54,9 @@
                 android:layout_weight="1"
                 android:textSize="20sp"
                 android:gravity="center"
-                android:textColor="#2980b9" />
+                android:textColor="#2980b9"
+                android:clickable="true"
+                android:onClick="falcon" />
         </LinearLayout>
 
         <LinearLayout

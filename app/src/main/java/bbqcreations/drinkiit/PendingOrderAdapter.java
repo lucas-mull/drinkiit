@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Created by lucas on 02/05/15.
+ *
  */
 public class PendingOrderAdapter extends BaseAdapter
 {

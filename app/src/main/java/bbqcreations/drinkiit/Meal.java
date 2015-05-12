@@ -5,14 +5,21 @@ import org.json.JSONObject;
 
 /**
  * Created by lucas on 30/04/15.
+ * Correspond à une catégorie de plat drinkiit
  */
 public class Meal {
+    /*
+    Attributs
+     */
+    int id; // identifiant du plat
+    String name;    // nom du plat
+    String description; // description du plat
+    double price;   // prix du plat
 
-    int id;
-    String name;
-    String description;
-    double price;
-
+    /**
+     * Créée un nouveau plat à partir d'un JSONObject. (Typiquement renvoyé par une requête http).
+     * @param data JSON à partir duquel créer le plat.
+     */
     public Meal(JSONObject data){
         try {
             this.id = data.getInt("id");
@@ -24,7 +31,9 @@ public class Meal {
         }
     }
 
-
+    /*
+    Getters & Setters
+     */
     public int getId() {
         return id;
     }
@@ -45,15 +54,7 @@ public class Meal {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public double getPrice() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 }

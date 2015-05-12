@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -106,7 +105,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public void notConnectedDrawerLayout(){
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActionBar().getThemedContext(),
                 R.layout.drawer_item,
                 R.id.txt_drawer_section,
@@ -119,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public void connectedDrawerLayout(){
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActionBar().getThemedContext(),
                 R.layout.drawer_item,
                 R.id.txt_drawer_section,
@@ -258,7 +257,6 @@ public class NavigationDrawerFragment extends Fragment {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
         if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -291,10 +289,6 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
-    }
-
-    public int getCurrentSelectedPosition(){
-        return this.mCurrentSelectedPosition;
     }
 
     /**

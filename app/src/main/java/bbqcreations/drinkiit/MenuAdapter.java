@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -17,12 +16,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
  * Created by lucas on 30/04/15.
+ *
  */
 public class MenuAdapter extends BaseAdapter {
 
@@ -36,12 +35,12 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     Context context;
-    Menu data;
+    Menu_ data;
 
     private ArrayList<Order> orders = new ArrayList<>();
     private static LayoutInflater inflater = null;
 
-    public MenuAdapter(Context context, Menu data){
+    public MenuAdapter(Context context, Menu_ data){
         this.context = context;
         this.data = data;
         inflater = LayoutInflater.from(context);
@@ -80,21 +79,11 @@ public class MenuAdapter extends BaseAdapter {
         return sum;
     }
 
-    public void emptyOrderList(){
-        while (orders.size() > 0)
-            orders.remove(0);
-        TextView total = (TextView)((mainActivity)context).findViewById(R.id.txt_order_total);
-        total.setText("0.0€");
-    }
-
     public boolean hasEnoughMoneyFor(Order order){
         UserInfo ui = new UserInfo(mainActivity.userInfoData);
         double sum = getCurrentTotal();
         sum += (order.getMeal().getPrice() * order.getQty());
-        if (ui.getCredit() >= sum)
-            return true;
-        else
-            return false;
+        return (ui.getCredit() >= sum);
     }
 
     @Override
@@ -168,7 +157,7 @@ public class MenuAdapter extends BaseAdapter {
                         Activity a = (mainActivity) context;
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString(cur.getName(), value);
-                        editor.commit();
+                        editor.apply();
 
                         // fermeture du clavier
                         InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);

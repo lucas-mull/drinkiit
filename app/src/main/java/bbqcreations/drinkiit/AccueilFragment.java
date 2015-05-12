@@ -5,12 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 
 /**
@@ -25,9 +25,9 @@ public class AccueilFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private int section_number;
+    int section_number;
 
-    private OnFragmentInteractionListener mListener;
+    OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -54,6 +54,7 @@ public class AccueilFragment extends Fragment {
         if (getArguments() != null) {
             section_number = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class AccueilFragment extends Fragment {
             btn_order.setVisibility(View.VISIBLE);
         }
         else
-        user.setText("bel inconnu");
+        user.setText("bel(le) inconnu(e)");
         return rootView;
     }
 
@@ -92,6 +93,11 @@ public class AccueilFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     /**

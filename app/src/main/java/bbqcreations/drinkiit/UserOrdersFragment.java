@@ -8,12 +8,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -31,10 +29,10 @@ public class UserOrdersFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private int sectionNumber;
-    private ArrayList<PendingOrder> orders;
+    int sectionNumber;
+    OnFragmentInteractionListener mListener;
 
-    private OnFragmentInteractionListener mListener;
+    private ArrayList<PendingOrder> orders;
     private ListView lv_orders;
     private MenuItem pb_actionbar;
     private MenuItem btn_refresh;
@@ -158,13 +156,6 @@ public class UserOrdersFragment extends Fragment {
             }
         });
         return rootView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

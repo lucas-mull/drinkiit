@@ -13,11 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -32,8 +30,8 @@ import org.apache.http.message.BasicNameValuePair;
  */
 public class PreferencesFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-    private Menu menu;
+    OnFragmentInteractionListener mListener;
+    private Menu_ menu;
     ListView lv_preferences;
 
     /**
@@ -41,8 +39,7 @@ public class PreferencesFragment extends Fragment {
      * this fragment using the provided parameters.
      */
     public static PreferencesFragment newInstance() {
-        PreferencesFragment fragment = new PreferencesFragment();
-        return fragment;
+        return new PreferencesFragment();
     }
 
     public PreferencesFragment() {
@@ -52,7 +49,7 @@ public class PreferencesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.menu = new Menu(mainActivity.menuData);
+        this.menu = new Menu_(mainActivity.menuData);
     }
 
     @Override
@@ -81,7 +78,7 @@ public class PreferencesFragment extends Fragment {
                         // hide keyboard
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString(cur.getName(), value);
-                        editor.commit();
+                        editor.apply();
                         adapter.data[position] = new BasicNameValuePair(cur.getName(), value);
 
                         // fermeture du clavier
@@ -114,13 +111,6 @@ public class PreferencesFragment extends Fragment {
             info[i] = new BasicNameValuePair(names[i], value);
         }
         return info;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

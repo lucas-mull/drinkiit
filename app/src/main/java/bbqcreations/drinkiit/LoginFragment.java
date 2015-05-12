@@ -2,34 +2,17 @@ package bbqcreations.drinkiit;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -44,9 +27,9 @@ public class LoginFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private int section_number;
+    int section_number;
 
-    private OnFragmentInteractionListener mListener;
+    OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,6 +56,7 @@ public class LoginFragment extends Fragment {
         if (getArguments() != null) {
             section_number = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -83,7 +67,6 @@ public class LoginFragment extends Fragment {
 
         final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         String savedEmail = preferences.getString(getString(R.string.field_email), null);
-//        Log.v("savedEmail", savedEmail);
         if (savedEmail != null){
             EditText form_email = (EditText)(rootView.findViewById(R.id.txt_email));
             form_email.setText(savedEmail);
@@ -101,20 +84,13 @@ public class LoginFragment extends Fragment {
                         form_passwd.setText(null);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString(getString(R.string.field_password), null);
-                        editor.commit();
+                        editor.apply();
                     }
 
                 }
             });
         }
         return rootView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -134,6 +110,11 @@ public class LoginFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 

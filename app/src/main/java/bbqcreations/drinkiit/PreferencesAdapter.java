@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 
 /**
  * Created by lucas on 10/05/15.
+ *
  */
 public class PreferencesAdapter extends BaseAdapter {
 
