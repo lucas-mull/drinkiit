@@ -70,7 +70,7 @@
     <string name="field_password">passwd</string>
 
     <!--URLs pour les requêtes http-->
-    <string name="baseURL">https://www.drinkiit.fr</string>
+    <string name="baseURL">https://drinkiit.ares-ensiie.eu</string>
     <string name="postLogformURL">/api/token</string>
     <string name="postOrderURL">/api/order</string>
     <string name="getTokenCheckURL">/api/isKeyValid?token=</string>

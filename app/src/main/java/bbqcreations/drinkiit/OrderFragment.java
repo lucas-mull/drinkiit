@@ -2,7 +2,6 @@ package bbqcreations.drinkiit;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,12 +16,7 @@ import android.widget.TextView;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OrderFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link OrderFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment utilisé pour passer une commande
  */
 public class OrderFragment extends Fragment {
 
@@ -32,7 +26,6 @@ public class OrderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     int sectionNumber;
-    OnFragmentInteractionListener mListener;
 
     ListView listView;
     private Menu_ menu;
@@ -63,8 +56,8 @@ public class OrderFragment extends Fragment {
         if (getArguments() != null) {
             sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        this.userInfo = new UserInfo(mainActivity.userInfoData);
-        this.menu = new Menu_(mainActivity.menuData);
+        this.userInfo = new UserInfo(MainActivity.userInfoData);
+        this.menu = new Menu_(MainActivity.menuData);
         setHasOptionsMenu(true);
     }
 
@@ -110,40 +103,18 @@ public class OrderFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-        ((mainActivity) activity).onSectionAttached(
+        ((MainActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }

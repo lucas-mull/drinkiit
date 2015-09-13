@@ -3,47 +3,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal|top"
-        android:weightSum="2.1">
+        android:layout_height="fill_parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_preorder_qty"
-            android:layout_weight="0.5"
             android:textSize="15sp"
-            android:gravity="center|left" />
+            android:layout_alignParentLeft="true"
+            android:text="3x"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:paddingTop="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_preorder_meal"
-            android:layout_weight="1"
+            android:layout_toRightOf="@+id/txt_preorder_qty"
+            android:layout_toLeftOf="@+id/txt_preorder_price"
             android:gravity="center"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:text="Bueno"
+            android:layout_marginLeft="10dp"
+            android:paddingTop="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_preorder_price"
-            android:layout_weight="0.5"
+            android:layout_toLeftOf="@+id/btn_preorder_remove"
             android:textSize="15sp"
-            android:gravity="center|right" />
+            android:gravity="center"
+            android:text="1,8€"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingTop="10dp" />
 
-        <Button
-            style="@style/button_delete"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:clickable="true"
+            android:background="?android:selectableItemBackground"
+            android:src="@android:drawable/ic_delete"
             android:textSize="15sp"
-            android:text="X"
             android:id="@+id/btn_preorder_remove"
+            android:layout_alignParentRight="true"
             android:onClick="removeOrder"
-            android:layout_gravity="right"
-            android:layout_margin="5sp" />
+            android:layout_margin="5dp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>

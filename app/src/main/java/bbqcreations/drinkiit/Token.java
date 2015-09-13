@@ -73,7 +73,7 @@ public class Token {
         this.setContext(context);
         try {
             sendData(new ApiURL(ApiURL.KEY_CONNECT, context), params);
-            if (mainActivity.tokenData.getString("type").equals("success"))
+            if (MainActivity.tokenData.getString("type").equals("success"))
                 this.setValue(this.getData().getString("data"));
             else
                 this.value = null;
@@ -176,16 +176,16 @@ public class Token {
         this.setData(new JSONObject(json));
         switch(url.getKey()){
             case ApiURL.KEY_CONNECT:
-                mainActivity.tokenData = getData();
+                MainActivity.tokenData = getData();
                 break;
             case ApiURL.KEY_USERINFO:
-                mainActivity.userInfoData = getData();
+                MainActivity.userInfoData = getData();
                 break;
             case ApiURL.KEY_MENU:
-                mainActivity.menuData = getData();
+                MainActivity.menuData = getData();
                 break;
             case ApiURL.KEY_USERORDERS:
-                mainActivity.currentOrdersData = getData();
+                MainActivity.currentOrdersData = getData();
                 break;
             default:
                 break;

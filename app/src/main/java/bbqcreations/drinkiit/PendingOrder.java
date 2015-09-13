@@ -53,6 +53,7 @@ public class PendingOrder {
     public Calendar parseString(String s){
         int year = Integer.parseInt(s.substring(0, 4));
         int month = Integer.parseInt(s.substring(5, 7));
+        month--;
         int day = Integer.parseInt(s.substring(8, 10));
         int hours = Integer.parseInt(s.substring(11, 13));
         int minutes = Integer.parseInt(s.substring(14, 16));

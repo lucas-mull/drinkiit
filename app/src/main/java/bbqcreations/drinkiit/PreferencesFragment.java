@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,21 +15,16 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PreferencesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PreferencesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment des préférences
  */
 public class PreferencesFragment extends Fragment {
 
-    OnFragmentInteractionListener mListener;
     private Menu_ menu;
     ListView lv_preferences;
 
@@ -49,7 +43,7 @@ public class PreferencesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.menu = new Menu_(mainActivity.menuData);
+        this.menu = new Menu_(MainActivity.menuData);
     }
 
     @Override
@@ -116,33 +110,11 @@ public class PreferencesFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }

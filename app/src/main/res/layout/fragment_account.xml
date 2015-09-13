@@ -54,8 +54,9 @@
                 android:layout_weight="1"
                 android:textSize="15sp"
                 android:gravity="center|top"
+                android:textColor="#ffffffff"
                 android:textStyle="italic"
-                android:textColor="#ffffffff" />
+                android:text="Lucas" />
 
             <TextView
                 android:layout_width="fill_parent"
@@ -77,7 +78,8 @@
                 android:textSize="15sp"
                 android:textStyle="italic"
                 android:gravity="center|top"
-                android:textColor="#ffffffff" />
+                android:textColor="#ffffffff"
+                android:text="coucou@ensiie.fr" />
 
 
             <TextView
@@ -98,7 +100,8 @@
                 android:layout_weight="1"
                 android:textSize="15sp"
                 android:gravity="center|top"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                android:text="10.0€" />
 
 
             <TextView
@@ -119,7 +122,8 @@
                 android:layout_weight="1"
                 android:textSize="15sp"
                 android:textStyle="italic"
-                android:gravity="center|top" />
+                android:gravity="center|top"
+                android:text="Activé" />
 
         </LinearLayout>
 

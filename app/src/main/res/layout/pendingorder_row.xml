@@ -4,49 +4,63 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:layout_margin="5sp"
-        android:weightSum="4">
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_date"
-            android:textSize="13sp"
-            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:text="13/09"
+            android:layout_margin="5dp"
+            android:textSize="14dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_name"
-            android:textSize="13sp"
-            android:layout_weight="1"
+            android:layout_toRightOf="@id/txt_pending_date"
+            android:layout_toLeftOf="@+id/txt_pending_total"
             android:gravity="center"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:text="1x Sandwich (Poulet Burger)"
+            android:layout_margin="5dp"
+            android:textSize="14dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_total"
-            android:textSize="13sp"
-            android:layout_weight="1"
+            android:layout_toLeftOf="@+id/txt_pending_done"
             android:gravity="center"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:text="2€"
+            android:textSize="14dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/txt_pending_done"
-            android:textSize="13sp"
             android:gravity="center"
-            android:layout_weight="1"
-            android:textColor="#ffffffff" />
-    </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:textColor="#ffffffff"
+            android:text="Non"
+            android:textSize="14dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+    </RelativeLayout>
 
 </FrameLayout>

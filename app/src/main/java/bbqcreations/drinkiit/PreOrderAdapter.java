@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class PreOrderAdapter extends BaseAdapter {
         TextView qty;
         TextView meal;
         TextView price;
-        Button delete;
+        ImageView delete;
     }
 
     ArrayList<Order> data = new ArrayList<>();
@@ -71,7 +72,7 @@ public class PreOrderAdapter extends BaseAdapter {
             holder.meal = (TextView)convertView.findViewById(R.id.txt_preorder_meal);
             holder.qty = (TextView)convertView.findViewById(R.id.txt_preorder_qty);
             holder.price = (TextView)convertView.findViewById(R.id.txt_preorder_price);
-            holder.delete = (Button)convertView.findViewById(R.id.btn_preorder_remove);
+            holder.delete = (ImageView)convertView.findViewById(R.id.btn_preorder_remove);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

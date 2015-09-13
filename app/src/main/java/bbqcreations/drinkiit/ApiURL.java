@@ -137,7 +137,7 @@ public class ApiURL {
         switch(key){
             case KEY_CONNECT:
                 nameValuePairs = new ArrayList<>(2);
-                nameValuePairs.add(new BasicNameValuePair("email", params[0]));
+                nameValuePairs.add(new BasicNameValuePair("aresID", params[0]));
                 nameValuePairs.add(new BasicNameValuePair("password", params[1]));
                 break;
             case KEY_ORDER:

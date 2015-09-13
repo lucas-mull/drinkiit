@@ -7,15 +7,15 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,7 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -33,11 +35,8 @@ import java.util.ArrayList;
  * aura pour effet de charger un nouveau fragment dans la fenêtre. Un fragment est une sous-activité en gros. Il représente une fonctionnalité
  * précise de notre application et possède un layout (une vue, ce qui s'affiche sur le téléphone) propre.
  */
-public class mainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, LoginFragment.OnFragmentInteractionListener,
-        AccueilFragment.OnFragmentInteractionListener, OrderFragment.OnFragmentInteractionListener,
-        UserOrdersFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener, PreferencesFragment.OnFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /*
     Paramètres static. Le mot clé static autorise ces variables à être utilisées depuis partout dans l'application
@@ -71,7 +70,7 @@ public class mainActivity extends ActionBarActivity
      * Appelé à la création de l'activité
      * On met en place le menu coulissant (navigation drawer)
      * Toute cette partie est autogénérée par android studio.
-     * @param savedInstanceState etat de l'instance
+     * @param savedInstanceState sauvegarde de l'instance après onPause
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -386,7 +385,7 @@ public class mainActivity extends ActionBarActivity
                     response.getUserOrders();
                     isTokenValid = true;
                     isConnected = true;
-                    SharedPreferences preferences = ((mainActivity)current_context).getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences preferences = ((MainActivity)current_context).getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString(getString(R.string.field_email), email);
                     if (isChecked)
@@ -664,8 +663,8 @@ public class mainActivity extends ActionBarActivity
         @Override
         protected Boolean doInBackground(Boolean... params) {
             final boolean replaceFragment = params[0];
-            Token inter = new Token(mainActivity.tokenData, getApplicationContext());
-            mainActivity.isTokenValid = inter.isValid();
+            Token inter = new Token(MainActivity.tokenData, getApplicationContext());
+            MainActivity.isTokenValid = inter.isValid();
             if (!isTokenValid){
                 runOnUiThread(new Runnable() {
                     @Override

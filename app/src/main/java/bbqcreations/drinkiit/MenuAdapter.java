@@ -80,7 +80,7 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     public boolean hasEnoughMoneyFor(Order order){
-        UserInfo ui = new UserInfo(mainActivity.userInfoData);
+        UserInfo ui = new UserInfo(MainActivity.userInfoData);
         double sum = getCurrentTotal();
         sum += (order.getMeal().getPrice() * order.getQty());
         return (ui.getCredit() >= sum);
@@ -103,6 +103,8 @@ public class MenuAdapter extends BaseAdapter {
         } else{
             holder = (ViewHolder) convertView.getTag();
         }
+
+        unSelectItem(convertView);
         final View fView = convertView;
         holder.name.setText(cur.getName().toUpperCase());
         holder.description.setText(cur.getDescription());
@@ -111,13 +113,13 @@ public class MenuAdapter extends BaseAdapter {
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Token token = new Token(mainActivity.tokenData, context);
+                Token token = new Token(MainActivity.tokenData, context);
                 int quantity = getQuantity(fView);
                 String comment = getComment(fView);
                 Order o = new Order(token.getValue(), cur, quantity, comment);
                 if (hasEnoughMoneyFor(o)){
                     orders.add(o);
-                    mainActivity.commandes = getOrders();
+                    MainActivity.commandes = getOrders();
                     Toast.makeText(context, quantity + " " + cur.getName() + " ajouté(s)", Toast.LENGTH_SHORT).show();
                 }
                 else
@@ -137,10 +139,9 @@ public class MenuAdapter extends BaseAdapter {
         });
 
         final TextView comment = holder.comment;
-        final SharedPreferences preferences = ((mainActivity)context).getPreferences(Context.MODE_PRIVATE);
-        String commentaire = preferences.getString(cur.getName(), null);
-        if (commentaire != null)
-            comment.setText(commentaire);
+        final SharedPreferences preferences = ((MainActivity)context).getPreferences(Context.MODE_PRIVATE);
+        String commentaire = preferences.getString(cur.getName(), "");
+        comment.setText(commentaire);
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,8 +154,8 @@ public class MenuAdapter extends BaseAdapter {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String value = input.getText().toString();
                         comment.setText(value);
-                        // hide keyboard
-                        Activity a = (mainActivity) context;
+
+                        Activity a = (MainActivity) context;
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString(cur.getName(), value);
                         editor.apply();
@@ -167,7 +168,7 @@ public class MenuAdapter extends BaseAdapter {
 
                 message.setNegativeButton("ANNULER", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Activity a = (mainActivity) context;
+                        Activity a = (MainActivity) context;
                         InputMethodManager inputManager = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputManager.hideSoftInputFromWindow(input.getWindowToken(), 0);
                         // Canceled.
@@ -208,7 +209,7 @@ public class MenuAdapter extends BaseAdapter {
         ll_clicked.setVisibility(View.GONE);
         base_ll.setVisibility(View.VISIBLE);
         if (getCurrentTotal() != 0){
-            TextView total = (TextView)((mainActivity)context).findViewById(R.id.txt_order_total);
+            TextView total = (TextView)((MainActivity)context).findViewById(R.id.txt_order_total);
             total.setTag(getCurrentTotal());
             total.setText(getCurrentTotal() + "€");
         }
